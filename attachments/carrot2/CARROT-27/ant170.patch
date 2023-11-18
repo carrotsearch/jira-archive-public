@@ -1,0 +1,119 @@
+Index: components/carrot2-ant-extensions/src/org/carrot2/ant/types/ComponentClasspath.java
+===================================================================
+--- components/carrot2-ant-extensions/src/org/carrot2/ant/types/ComponentClasspath.java	(revision 1610)
++++ components/carrot2-ant-extensions/src/org/carrot2/ant/types/ComponentClasspath.java	(working copy)
+@@ -25,7 +25,6 @@
+ import org.carrot2.ant.tasks.Utils;
+ 
+ 
+-
+ /**
+  * A custom datatype extending ant's {@link Path} class and
+  * containing all classpath files (JARs and folders) included from 
+@@ -35,6 +34,7 @@
+     private File componentDescriptor;
+     private String profile;  
+     private final BaseDependencyPathTask depPathTask;
++    private ResourceCollectionImpl rc;
+ 
+ 	public ComponentClasspath(Project project) {
+ 		super(project);
+@@ -125,4 +125,18 @@
+ 
+         return (String []) result.toArray( new String[ result.size() ] );
+ 	}
+-}
++
++    /**
++     * 
++     */
++    public boolean isReference() {
++        if (!super.isReference()) {
++            if (this.rc == null) {
++                this.rc = new ResourceCollectionImpl(list());
++                this.add(rc);
++            }
++        }
++
++        return super.isReference(); 
++    }
++}
+\ No newline at end of file
+Index: components/carrot2-ant-extensions/src/org/carrot2/ant/types/ResourceCollectionImpl.java
+===================================================================
+--- components/carrot2-ant-extensions/src/org/carrot2/ant/types/ResourceCollectionImpl.java	(revision 0)
++++ components/carrot2-ant-extensions/src/org/carrot2/ant/types/ResourceCollectionImpl.java	(revision 0)
+@@ -0,0 +1,42 @@
++package org.carrot2.ant.types;
++
++import java.io.File;
++import java.util.ArrayList;
++import java.util.Iterator;
++
++import org.apache.tools.ant.types.ResourceCollection;
++import org.apache.tools.ant.types.resources.FileResource;
++
++/**
++ * A workaround for ANT 1.7.0 API changes: blank resource
++ * collection implementation.
++ * 
++ * @author Dawid Weiss
++ */
++final class ResourceCollectionImpl implements ResourceCollection
++{
++    private final ArrayList files;
++
++    public ResourceCollectionImpl(String [] paths)
++    {
++        this.files = new ArrayList();
++        for (int i = 0; i < paths.length; i++) {
++            files.add(new FileResource(new File(paths[i])));
++        }
++    }
++
++    public boolean isFilesystemOnly()
++    {
++        return true;
++    }
++
++    public Iterator iterator()
++    {
++        return files.iterator();
++    }
++
++    public int size()
++    {
++        return files.size();
++    }
++}
+Index: components/carrot2-ant-extensions/src/org/carrot2/ant/types/DependencyPath.java
+===================================================================
+--- components/carrot2-ant-extensions/src/org/carrot2/ant/types/DependencyPath.java	(revision 1610)
++++ components/carrot2-ant-extensions/src/org/carrot2/ant/types/DependencyPath.java	(working copy)
+@@ -46,7 +46,7 @@
+ 
+     /**
+      * A {@link org.apache.tools.ant.BuildListener} which deletes a given
+-     * file at buidl
++     * file at build.
+      * 
+      * @author Dawid Weiss
+      */
+@@ -60,7 +60,7 @@
+ 
+         private void removeFile(Project project) {
+             if (project == getProject()) {
+-                getProject().log("Removing cache file: " + file.getAbsolutePath(), Project.MSG_VERBOSE);
++                getProject().log("Removing cache file: " + file.getAbsolutePath(), LOG_LEVEL);
+                 if (file.exists()) {
+                     this.file.delete();
+                 }
+@@ -116,7 +116,7 @@
+         if (this.getRefid() != null) {
+             id = "[" + this.getRefid().getRefId() + "]";
+         } else {
+-            id = "[unnamed]";
++            id = "[" + this.id + "]";
+         }
+ 
+         final Project p = getProject();

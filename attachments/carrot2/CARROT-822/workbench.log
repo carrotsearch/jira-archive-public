@@ -1,0 +1,644 @@
+2011-07-20 07:06:50,689 INFO  org.carrot2.workbench.core.WorkbenchCorePlugin: Changed instanceLocation to: file:/F:/archive/carrot2/- releases/3.5.1-dev/64/carrot2-workbench-3.6.0-dev/workspace/
+2011-07-20 07:06:50,690 DEBUG org.carrot2.workbench.core.WorkbenchCorePlugin: User location: file:/C:/Users/stachoo/user/
+2011-07-20 07:06:50,690 DEBUG org.carrot2.workbench.core.WorkbenchCorePlugin: Install location: file:/F:/archive/carrot2/- releases/3.5.1-dev/64/carrot2-workbench-3.6.0-dev/
+2011-07-20 07:06:50,690 DEBUG org.carrot2.workbench.core.WorkbenchCorePlugin: Instance location: file:/F:/archive/carrot2/- releases/3.5.1-dev/64/carrot2-workbench-3.6.0-dev/workspace/
+2011-07-20 07:06:50,691 DEBUG org.carrot2.workbench.core.WorkbenchCorePlugin: Platform working location: F:/archive/carrot2/- releases/3.5.1-dev/64/carrot2-workbench-3.6.0-dev/workspace
+2011-07-20 07:06:50,691 DEBUG org.carrot2.workbench.core.WorkbenchCorePlugin: Configuration location: file:/F:/archive/carrot2/- releases/3.5.1-dev/64/carrot2-workbench-3.6.0-dev/configuration/
+2011-07-20 07:06:50,791 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-etools.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-etools.xml
+2011-07-20 07:06:50,800 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-etools-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-etools-attributes.xml
+2011-07-20 07:06:50,826 INFO  org.carrot2.util.xslt.TemplatesPool: XSLT transformer factory: com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl
+2011-07-20 07:06:50,973 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-bing.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-bing.xml
+2011-07-20 07:06:50,976 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-bing-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-bing-attributes.xml
+2011-07-20 07:06:50,994 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-yahoo-boss.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-yahoo-boss.xml
+2011-07-20 07:06:51,044 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-yahoo-boss-wiki-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-yahoo-boss-wiki-attributes.xml
+2011-07-20 07:06:51,052 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-yahoo-boss-images-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-yahoo-boss-images-attributes.xml
+2011-07-20 07:06:51,061 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-yahoo-boss-news-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-yahoo-boss-news-attributes.xml
+2011-07-20 07:06:51,069 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-xml.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-xml.xml
+2011-07-20 07:06:51,084 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-xml-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-xml-attributes.xml
+2011-07-20 07:06:51,096 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-google-desktop.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-google-desktop.xml
+2011-07-20 07:06:51,100 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-google-desktop-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-google-desktop-attributes.xml
+2011-07-20 07:06:51,133 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-solr.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-solr.xml
+2011-07-20 07:06:51,136 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-solr-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-solr-attributes.xml
+2011-07-20 07:06:51,171 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-lucene.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-lucene.xml
+2011-07-20 07:06:51,174 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-lucene-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-lucene-attributes.xml
+2011-07-20 07:06:51,201 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-ambient.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-ambient.xml
+2011-07-20 07:06:51,741 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-pubmed.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-pubmed.xml
+2011-07-20 07:06:51,748 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-indeed.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-indeed.xml
+2011-07-20 07:06:51,751 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-indeed-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-indeed-attributes.xml
+2011-07-20 07:06:51,760 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	source-opensearch.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/source-opensearch.xml
+2011-07-20 07:06:51,764 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	algorithm-lingo.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/algorithm-lingo.xml
+2011-07-20 07:06:51,767 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	algorithm-lingo-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/algorithm-lingo-attributes.xml
+2011-07-20 07:06:51,839 INFO  org.carrot2.matrix.NNIInterface: Native LAPACK not available: no nni_lapack in java.library.path
+2011-07-20 07:06:51,840 INFO  org.carrot2.matrix.NNIInterface: Native BLAS not available: no nni_blas in java.library.path
+2011-07-20 07:06:51,858 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	algorithm-stc.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/algorithm-stc.xml
+2011-07-20 07:06:51,864 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	algorithm-stc-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/algorithm-stc-attributes.xml
+2011-07-20 07:06:51,878 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	algorithm-kmeans.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/algorithm-kmeans.xml
+2011-07-20 07:06:51,880 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	algorithm-kmeans-attributes.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/algorithm-kmeans-attributes.xml
+2011-07-20 07:06:51,891 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	algorithm-synthetic.xml
+	- 1 hit from: org.carrot2.util.resource.PrefixDecoratorLocator [prefix: suites/, delegate: org.carrot2.workbench.core.BundleResourceLocator [bundle: org.carrot2.suites.default_3.6.0.dev-snapshot [34]]]
+		- bundleentry://34.fwk1651462312/suites/algorithm-synthetic.xml
+2011-07-20 07:06:54,020 DEBUG org.carrot2.workbench.core.ApplicationWorkbenchWindowAdvisor: Toolbar contributions:
+null (ToolBarContributionItem)
+org.carrot2.workbench.core.SearchEditorActionSet (ToolBarContributionItem2)
+org.carrot2.workbench.core.editors.searchEditor (PlaceholderContributionItem)
+org.eclipse.ui.browser.editor (ToolBarContributionItem2)
+
+2011-07-20 07:06:54,021 DEBUG org.carrot2.workbench.core.ApplicationWorkbenchWindowAdvisor: Menu contributions:
+null (MenuManager)
+org.carrot2.menus.about (MenuManager)
+about (ActionContributionItem)
+org.carrot2.workbench.core.handlers.DisplayWelcomeView (CommandContributionItem)
+additions (GroupMarker)
+org.carrot2.menus.window (MenuManager)
+preferences (ActionContributionItem)
+org.carrot2.menus.showview (MenuManager)
+viewsShortlist (ShowViewMenu)
+org.carrot2.menus.openperspective (MenuManager)
+perspectivesShortlist (ChangeToPerspectiveMenu)
+org.carrot2.workbench.menus.searchMenu (ActionSetContributionItem)
+additions (GroupMarker)
+org.carrot2.menus.file (MenuManager)
+quit (ActionContributionItem)
+null (Separator)
+saveAs (ActionContributionItem)
+null (Separator)
+closeAll (ActionContributionItem)
+close (ActionContributionItem)
+
+2011-07-20 07:06:54,026 DEBUG org.carrot2.workbench.core.ApplicationWorkbenchWindowAdvisor: Preference page contributions:
+org.carrot2.workbench.core.preferences.WorkbenchPreferencePage (Carrot2)
+org.eclipse.ui.preferencePages.Workbench (General)
+org.eclipse.ui.browser.preferencePage (Web Browser)
+
+2011-07-20 07:06:54,027 DEBUG org.carrot2.workbench.core.ApplicationWorkbenchWindowAdvisor: View contributions:
+org.carrot2.workbench.core.views.attributeInfo (Attribute Info)
+org.carrot2.workbench.core.views.attributes (Attributes)
+org.carrot2.workbench.core.views.benchmark (Benchmark)
+org.carrot2.workbench.core.views.clusters (Clusters)
+org.carrot2.workbench.core.views.documents (Documents)
+org.carrot2.workbench.core.views.search (Search)
+org.carrot2.workbench.views.aduna (Aduna Cluster Map Visualization)
+org.carrot2.workbench.views.circles (Circles Visualization)
+org.carrot2.workbench.views.foamtree (FoamTree Visualization)
+org.eclipse.pde.runtime.LogView (Error Log)
+org.eclipse.ui.browser.view (Internal Web Browser)
+org.eclipse.ui.internal.introview (Welcome)
+org.eclipse.ui.views.ContentOutline (Outline)
+org.eclipse.ui.views.ProgressView (Progress)
+org.eclipse.ui.views.PropertySheet (Properties)
+
+2011-07-20 07:20:19,102 DEBUG org.carrot2.workbench.core.ui.DocumentListSelectionAdapter: editor->doclist: <empty selection>
+2011-07-20 07:20:19,111 DEBUG org.carrot2.workbench.core.ui.DocumentList: Velocity [rendering: 0.00, display: 0.01]
+2011-07-20 07:20:19,253 DEBUG org.carrot2.util.httpclient.HttpUtils: GET: http://www.etools.ch/partnerSearch.do?partner=Carrot2&query=data+mining&dataSourceResults=20&maxRecords=100&language=en&timeout=4000&dataSources=all&safeSearch=false&country=web
+2011-07-20 07:20:20,247 DEBUG org.carrot2.text.clustering.MultilingualClustering: Performing monolingual clustering in: English
+2011-07-20 07:20:20,439 DEBUG org.carrot2.util.resource.ResourceCache: Loading resources, locations: [org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]]
+2011-07-20 07:20:20,449 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ar
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ar
+2011-07-20 07:20:20,451 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ar
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ar
+2011-07-20 07:20:20,453 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.bg
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.bg
+2011-07-20 07:20:20,455 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.bg
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.bg
+2011-07-20 07:20:20,457 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.cz
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.cz
+2011-07-20 07:20:20,458 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.cz
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.cz
+2011-07-20 07:20:20,459 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.zh_cn
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.zh_cn
+2011-07-20 07:20:20,462 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.zh_cn
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.zh_cn
+2011-07-20 07:20:20,464 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.da
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.da
+2011-07-20 07:20:20,465 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.da
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.da
+2011-07-20 07:20:20,466 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.nl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.nl
+2011-07-20 07:20:20,467 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.nl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.nl
+2011-07-20 07:20:20,469 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.en
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.en
+2011-07-20 07:20:20,470 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.en
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.en
+2011-07-20 07:20:20,473 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ee
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ee
+2011-07-20 07:20:20,474 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ee
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ee
+2011-07-20 07:20:20,475 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.fi
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.fi
+2011-07-20 07:20:20,477 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.fi
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.fi
+2011-07-20 07:20:20,480 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.fr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.fr
+2011-07-20 07:20:20,481 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.fr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.fr
+2011-07-20 07:20:20,490 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.de
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.de
+2011-07-20 07:20:20,494 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.de
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.de
+2011-07-20 07:20:20,495 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.gr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.gr
+2011-07-20 07:20:20,496 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.gr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.gr
+2011-07-20 07:20:20,497 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.hu
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.hu
+2011-07-20 07:20:20,499 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.hu
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.hu
+2011-07-20 07:20:20,500 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.it
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.it
+2011-07-20 07:20:20,501 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.it
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.it
+2011-07-20 07:20:20,504 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ie
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ie
+2011-07-20 07:20:20,506 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ie
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ie
+2011-07-20 07:20:20,507 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ko
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ko
+2011-07-20 07:20:20,530 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ko
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ko
+2011-07-20 07:20:20,538 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.lv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.lv
+2011-07-20 07:20:20,539 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.lv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.lv
+2011-07-20 07:20:20,539 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.lt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.lt
+2011-07-20 07:20:20,540 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.lt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.lt
+2011-07-20 07:20:20,541 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.mt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.mt
+2011-07-20 07:20:20,542 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.mt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.mt
+2011-07-20 07:20:20,543 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.no
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.no
+2011-07-20 07:20:20,544 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.no
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.no
+2011-07-20 07:20:20,545 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.pl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.pl
+2011-07-20 07:20:20,546 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.pl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.pl
+2011-07-20 07:20:20,549 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.pt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.pt
+2011-07-20 07:20:20,550 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.pt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.pt
+2011-07-20 07:20:20,551 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ro
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ro
+2011-07-20 07:20:20,552 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ro
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ro
+2011-07-20 07:20:20,553 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ru
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ru
+2011-07-20 07:20:20,557 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ru
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ru
+2011-07-20 07:20:20,558 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.sk
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.sk
+2011-07-20 07:20:20,563 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.sk
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.sk
+2011-07-20 07:20:20,564 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.sl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.sl
+2011-07-20 07:20:20,566 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.sl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.sl
+2011-07-20 07:20:20,567 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.es
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.es
+2011-07-20 07:20:20,568 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.es
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.es
+2011-07-20 07:20:20,568 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.sv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.sv
+2011-07-20 07:20:20,569 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.sv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.sv
+2011-07-20 07:20:20,570 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.tr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.tr
+2011-07-20 07:20:20,571 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.tr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.tr
+2011-07-20 07:20:21,327 DEBUG org.carrot2.workbench.core.ui.DocumentList: Velocity [rendering: 0.06, display: 0.00]
+2011-07-20 07:20:28,834 DEBUG org.carrot2.text.clustering.MultilingualClustering: Performing monolingual clustering in: English
+2011-07-20 07:20:28,863 DEBUG org.carrot2.util.resource.ResourceCache: Reloading resources, locations: [org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]]
+2011-07-20 07:20:28,864 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ar
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ar
+2011-07-20 07:20:28,866 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ar
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ar
+2011-07-20 07:20:28,867 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.bg
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.bg
+2011-07-20 07:20:28,869 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.bg
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.bg
+2011-07-20 07:20:28,870 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.cz
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.cz
+2011-07-20 07:20:28,871 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.cz
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.cz
+2011-07-20 07:20:28,872 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.zh_cn
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.zh_cn
+2011-07-20 07:20:28,873 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.zh_cn
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.zh_cn
+2011-07-20 07:20:28,874 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.da
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.da
+2011-07-20 07:20:28,875 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.da
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.da
+2011-07-20 07:20:28,876 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.nl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.nl
+2011-07-20 07:20:28,877 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.nl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.nl
+2011-07-20 07:20:28,878 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.en
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.en
+2011-07-20 07:20:28,879 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.en
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.en
+2011-07-20 07:20:28,881 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ee
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ee
+2011-07-20 07:20:28,882 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ee
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ee
+2011-07-20 07:20:28,883 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.fi
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.fi
+2011-07-20 07:20:28,884 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.fi
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.fi
+2011-07-20 07:20:28,885 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.fr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.fr
+2011-07-20 07:20:28,886 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.fr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.fr
+2011-07-20 07:20:28,887 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.de
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.de
+2011-07-20 07:20:28,888 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.de
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.de
+2011-07-20 07:20:28,889 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.gr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.gr
+2011-07-20 07:20:28,890 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.gr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.gr
+2011-07-20 07:20:28,891 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.hu
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.hu
+2011-07-20 07:20:28,892 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.hu
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.hu
+2011-07-20 07:20:28,893 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.it
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.it
+2011-07-20 07:20:28,894 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.it
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.it
+2011-07-20 07:20:28,895 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ie
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ie
+2011-07-20 07:20:28,896 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ie
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ie
+2011-07-20 07:20:28,897 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ko
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ko
+2011-07-20 07:20:28,899 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ko
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ko
+2011-07-20 07:20:28,900 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.lv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.lv
+2011-07-20 07:20:28,901 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.lv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.lv
+2011-07-20 07:20:28,902 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.lt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.lt
+2011-07-20 07:20:28,903 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.lt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.lt
+2011-07-20 07:20:28,903 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.mt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.mt
+2011-07-20 07:20:28,904 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.mt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.mt
+2011-07-20 07:20:28,905 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.no
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.no
+2011-07-20 07:20:28,906 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.no
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.no
+2011-07-20 07:20:28,907 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.pl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.pl
+2011-07-20 07:20:28,908 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.pl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.pl
+2011-07-20 07:20:28,909 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.pt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.pt
+2011-07-20 07:20:28,910 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.pt
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.pt
+2011-07-20 07:20:28,911 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ro
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ro
+2011-07-20 07:20:28,912 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ro
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ro
+2011-07-20 07:20:28,913 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.ru
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.ru
+2011-07-20 07:20:28,914 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.ru
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.ru
+2011-07-20 07:20:28,915 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.sk
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.sk
+2011-07-20 07:20:28,916 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.sk
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.sk
+2011-07-20 07:20:28,917 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.sl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.sl
+2011-07-20 07:20:28,918 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.sl
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.sl
+2011-07-20 07:20:28,919 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.es
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.es
+2011-07-20 07:20:28,920 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.es
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.es
+2011-07-20 07:20:28,921 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.sv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.sv
+2011-07-20 07:20:28,922 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.sv
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.sv
+2011-07-20 07:20:28,923 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stopwords.tr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stopwords.tr
+2011-07-20 07:20:28,924 DEBUG org.carrot2.util.resource.ResourceLookup: getFirst():
+	stoplabels.tr
+	- 1 hit from: org.carrot2.util.resource.ContextClassLoaderLocator [current: org.eclipse.core.runtime.internal.adaptor.ContextFinder@b554d32]
+		- bundleresource://35.fwk1651462312:2/stoplabels.tr
+2011-07-20 07:20:29,201 DEBUG org.carrot2.workbench.core.ui.DocumentList: Velocity [rendering: 0.03, display: 0.00]

@@ -1,0 +1,13 @@
+diff --git a/hppc/src/main/templates/com/carrotsearch/hppc/KTypeVTypeWormMap.java b/hppc/src/main/templates/com/carrotsearch/hppc/KTypeVTypeWormMap.java
+index a929c7a..8391621 100644
+--- a/hppc/src/main/templates/com/carrotsearch/hppc/KTypeVTypeWormMap.java
++++ b/hppc/src/main/templates/com/carrotsearch/hppc/KTypeVTypeWormMap.java
+@@ -1023,7 +1023,7 @@ public class KTypeVTypeWormMap<KType, VType>
+   /**
+    * A view of the keys inside this map.
+    */
+-  final class KeysContainer extends AbstractKTypeCollection<KType>
++  public final class KeysContainer extends AbstractKTypeCollection<KType>
+           implements KTypeLookupContainer<KType> {
+     @Override
+     public boolean contains(KType e) {

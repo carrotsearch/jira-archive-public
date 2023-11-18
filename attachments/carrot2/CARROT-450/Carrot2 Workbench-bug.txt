@@ -1,0 +1,454 @@
+System: Linux 2.6.27.9-159.fc10.i686 #1 SMP Tue Dec 16 15:12:04 EST 2008 i686
+X Vendor: The X.Org Foundation
+X Vendor Release: 10503000
+Selinux: Enforcing
+Accessibility: Disabled
+GTK+ Theme: Nodoka
+Icon Theme: Fedora
+
+Memory status: size: 714080256 vsize: 714080256 resident: 72368128 share: 18366464 rss: 72368128 rss_rlim: 18446744073709551615
+CPU usage: start_time: 1232580316 rtime: 407 utime: 381 stime: 26 cutime:0 cstime: 0 timeout: 0 it_real_value: 0 frequency: 100
+
+Backtrace was generated from '/usr/libexec/Carrot2 Workbench'
+
+[?1034h[Thread debugging using libthread_db enabled]
+[New Thread 0xb7fca710 (LWP 23444)]
+[New Thread 0x414eb90 (LWP 23458)]
+[New Thread 0x2a65b90 (LWP 23457)]
+[New Thread 0x19ffb90 (LWP 23454)]
+[New Thread 0x4f4bb90 (LWP 23453)]
+[New Thread 0x7c55b90 (LWP 23452)]
+[New Thread 0x19aeb90 (LWP 23451)]
+[New Thread 0x192db90 (LWP 23450)]
+[New Thread 0x6515b90 (LWP 23449)]
+[New Thread 0x6185b90 (LWP 23448)]
+[New Thread 0x18dcb90 (LWP 23447)]
+[New Thread 0x675bb90 (LWP 23446)]
+[New Thread 0x3439b90 (LWP 23445)]
+0x00110416 in __kernel_vsyscall ()
+#0  0x00110416 in __kernel_vsyscall ()
+#1  0x007970db in waitpid () from /lib/libpthread.so.0
+#2  0x00849617 in g_spawn_sync () from /lib/libglib-2.0.so.0
+#3  0x0084995c in g_spawn_command_line_sync () from /lib/libglib-2.0.so.0
+#4  0x0059d083 in ?? () from /usr/lib/gtk-2.0/modules/libgnomebreakpad.so
+#5  0x0059d614 in ?? () from /usr/lib/gtk-2.0/modules/libgnomebreakpad.so
+#6  0x0059d6c5 in ?? () from /usr/lib/gtk-2.0/modules/libgnomebreakpad.so
+#7  0x01090325 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+#8  0x0000000b in ?? ()
+#9  0x011cb5a8 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+#10 0xbffe753c in ?? ()
+#11 0x00000000 in ?? ()
+
+Thread 13 (Thread 0x3439b90 (LWP 23445)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793432 in pthread_cond_timedwait@@GLIBC_2.3.2 ()
+   from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108fe6f in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x0946cfd8 in ?? ()
+No symbol table info available.
+#4  0x0946cfc0 in ?? ()
+No symbol table info available.
+#5  0x03439068 in ?? ()
+No symbol table info available.
+#6  0x00025f17 in ?? ()
+No symbol table info available.
+#7  0x000003e8 in ?? ()
+No symbol table info available.
+#8  0x000003e8 in ?? ()
+No symbol table info available.
+#9  0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 12 (Thread 0x675bb90 (LWP 23446)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108e921 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x094c8268 in ?? ()
+No symbol table info available.
+#4  0x094c8250 in ?? ()
+No symbol table info available.
+#5  0xffffffff in ?? ()
+No symbol table info available.
+#6  0xffffffff in ?? ()
+No symbol table info available.
+#7  0x094c7800 in ?? ()
+No symbol table info available.
+#8  0x094c8248 in ?? ()
+No symbol table info available.
+#9  0x0675ad60 in ?? ()
+No symbol table info available.
+#10 0x011b2e5c in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#11 0x011ce840 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#12 0x094c7800 in ?? ()
+No symbol table info available.
+#13 0x0675ac48 in ?? ()
+No symbol table info available.
+#14 0x010fc1ed in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#15 0x094c8228 in ?? ()
+No symbol table info available.
+#16 0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 11 (Thread 0x18dcb90 (LWP 23447)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108e921 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x094cc7f8 in ?? ()
+No symbol table info available.
+#4  0x094cc7e0 in ?? ()
+No symbol table info available.
+#5  0xffffffff in ?? ()
+No symbol table info available.
+#6  0xffffffff in ?? ()
+No symbol table info available.
+#7  0x094cbc00 in ?? ()
+No symbol table info available.
+#8  0x094cc7d8 in ?? ()
+No symbol table info available.
+#9  0x018dbc80 in ?? ()
+No symbol table info available.
+#10 0x011b2e5c in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#11 0x011ce840 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#12 0x094cbc00 in ?? ()
+No symbol table info available.
+#13 0x018dbb98 in ?? ()
+No symbol table info available.
+#14 0x010fc1ed in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#15 0x094cc7b8 in ?? ()
+No symbol table info available.
+#16 0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 10 (Thread 0x6185b90 (LWP 23448)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00795495 in sem_wait@@GLIBC_2.1 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x010937aa in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x011cc388 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#4  0x011b2e5c in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#5  0x06184d88 in ?? ()
+No symbol table info available.
+#6  0x0108d1e6 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#7  0x094dcc00 in ?? ()
+No symbol table info available.
+#8  0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 9 (Thread 0x6515b90 (LWP 23449)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0107ecf1 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x0946dcb0 in ?? ()
+No symbol table info available.
+#4  0x0946dc98 in ?? ()
+No symbol table info available.
+#5  0x00000001 in ?? ()
+No symbol table info available.
+#6  0x00000001 in ?? ()
+No symbol table info available.
+#7  0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 8 (Thread 0x192db90 (LWP 23450)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0107eb09 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x0946c300 in ?? ()
+No symbol table info available.
+#4  0x0946c2e8 in ?? ()
+No symbol table info available.
+#5  0x00000001 in ?? ()
+No symbol table info available.
+#6  0x00000001 in ?? ()
+No symbol table info available.
+#7  0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 7 (Thread 0x19aeb90 (LWP 23451)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793432 in pthread_cond_timedwait@@GLIBC_2.3.2 ()
+   from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108fe6f in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x019ae170 in ?? ()
+No symbol table info available.
+#4  0x019ae158 in ?? ()
+No symbol table info available.
+#5  0x019ae1b0 in ?? ()
+No symbol table info available.
+#6  0x000a41ad in ?? ()
+No symbol table info available.
+#7  0x00000032 in ?? ()
+No symbol table info available.
+#8  0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 6 (Thread 0x7c55b90 (LWP 23452)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108e921 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x095f9ac8 in ?? ()
+No symbol table info available.
+#4  0x095f9ab0 in ?? ()
+No symbol table info available.
+#5  0xffffffff in ?? ()
+No symbol table info available.
+#6  0xffffffff in ?? ()
+No symbol table info available.
+#7  0x095eb000 in ?? ()
+No symbol table info available.
+#8  0x095f9aa8 in ?? ()
+No symbol table info available.
+#9  0x07c54e3c in ?? ()
+No symbol table info available.
+#10 0x011b2e5c in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#11 0x011ce840 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#12 0x095eb000 in ?? ()
+No symbol table info available.
+#13 0x07c54d28 in ?? ()
+No symbol table info available.
+#14 0x010fc1ed in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#15 0x095f9a88 in ?? ()
+No symbol table info available.
+#16 0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 5 (Thread 0x4f4bb90 (LWP 23453)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793432 in pthread_cond_timedwait@@GLIBC_2.3.2 ()
+   from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108fe6f in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x0960e940 in ?? ()
+No symbol table info available.
+#4  0x0960e928 in ?? ()
+No symbol table info available.
+#5  0x04f4ac20 in ?? ()
+No symbol table info available.
+#6  0x00005b9d in ?? ()
+No symbol table info available.
+#7  0x00007530 in ?? ()
+No symbol table info available.
+#8  0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 4 (Thread 0x19ffb90 (LWP 23454)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108e921 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x09613f00 in ?? ()
+No symbol table info available.
+#4  0x09613ee8 in ?? ()
+No symbol table info available.
+#5  0xffffffff in ?? ()
+No symbol table info available.
+#6  0xffffffff in ?? ()
+No symbol table info available.
+#7  0x09613800 in ?? ()
+No symbol table info available.
+#8  0x09613ee0 in ?? ()
+No symbol table info available.
+#9  0x019fed3c in ?? ()
+No symbol table info available.
+#10 0x011b2e5c in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#11 0x011ce840 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#12 0x09613800 in ?? ()
+No symbol table info available.
+#13 0x019fec28 in ?? ()
+No symbol table info available.
+#14 0x010fc1ed in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#15 0x09613ec0 in ?? ()
+No symbol table info available.
+#16 0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 3 (Thread 0x2a65b90 (LWP 23457)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108e921 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x0961dba8 in ?? ()
+No symbol table info available.
+#4  0x0961db90 in ?? ()
+No symbol table info available.
+#5  0xffffffff in ?? ()
+No symbol table info available.
+#6  0xffffffff in ?? ()
+No symbol table info available.
+#7  0x09e3b000 in ?? ()
+No symbol table info available.
+#8  0x0961db88 in ?? ()
+No symbol table info available.
+#9  0x02a64e98 in ?? ()
+No symbol table info available.
+#10 0x011b2e5c in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#11 0x011ce840 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#12 0x09e3b000 in ?? ()
+No symbol table info available.
+#13 0x02a64d78 in ?? ()
+No symbol table info available.
+#14 0x010fc1ed in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#15 0x0961db68 in ?? ()
+No symbol table info available.
+#16 0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 2 (Thread 0x414eb90 (LWP 23458)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x00793105 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x0108e921 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#3  0x098c2788 in ?? ()
+No symbol table info available.
+#4  0x098c2770 in ?? ()
+No symbol table info available.
+#5  0xffffffff in ?? ()
+No symbol table info available.
+#6  0xffffffff in ?? ()
+No symbol table info available.
+#7  0x09e66000 in ?? ()
+No symbol table info available.
+#8  0x098c2768 in ?? ()
+No symbol table info available.
+#9  0x0414ddb0 in ?? ()
+No symbol table info available.
+#10 0x011b2e5c in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#11 0x011ce840 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#12 0x09e66000 in ?? ()
+No symbol table info available.
+#13 0x0414dc98 in ?? ()
+No symbol table info available.
+#14 0x010fc1ed in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#15 0x098c2748 in ?? ()
+No symbol table info available.
+#16 0x00000000 in ?? ()
+No symbol table info available.
+
+Thread 1 (Thread 0xb7fca710 (LWP 23444)):
+#0  0x00110416 in __kernel_vsyscall ()
+No symbol table info available.
+#1  0x007970db in waitpid () from /lib/libpthread.so.0
+No symbol table info available.
+#2  0x00849617 in g_spawn_sync () from /lib/libglib-2.0.so.0
+No symbol table info available.
+#3  0x0084995c in g_spawn_command_line_sync () from /lib/libglib-2.0.so.0
+No symbol table info available.
+#4  0x0059d083 in ?? () from /usr/lib/gtk-2.0/modules/libgnomebreakpad.so
+No symbol table info available.
+#5  0x0059d614 in ?? () from /usr/lib/gtk-2.0/modules/libgnomebreakpad.so
+No symbol table info available.
+#6  0x0059d6c5 in ?? () from /usr/lib/gtk-2.0/modules/libgnomebreakpad.so
+No symbol table info available.
+#7  0x01090325 in ?? ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#8  0x0000000b in ?? ()
+No symbol table info available.
+#9  0x011cb5a8 in geteuid ()
+   from /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/bin/../lib/i386/client/libjvm.so
+No symbol table info available.
+#10 0xbffe753c in ?? ()
+No symbol table info available.
+#11 0x00000000 in ?? ()
+No symbol table info available.
+The program is running.  Quit anyway (and detach it)? (y or n) [answered Y; input not from terminal]
+
+
+----------- .xsession-errors (107 sec old) ---------------------
+(<unknown>:23106): Gtk-CRITICAL **: gtk_paint_box: assertion `style->depth == gdk_drawable_get_depth (window)' failed
+(<unknown>:23106): Gtk-CRITICAL **: gtk_paint_box: assertion `style->depth == gdk_drawable_get_depth (window)' failed
+(<unknown>:23106): Gtk-CRITICAL **: gtk_paint_box: assertion `style->depth == gdk_drawable_get_depth (window)' failed
+(<unknown>:23106): Gtk-CRITICAL **: gtk_paint_box: assertion `style->depth == gdk_drawable_get_depth (window)' failed
+(<unknown>:23106): Gtk-CRITICAL **: gtk_paint_box: assertion `style->depth == gdk_drawable_get_depth (window)' failed
+(<unknown>:23106): Gtk-CRITICAL **: gtk_paint_box: assertion `style->depth == gdk_drawable_get_depth (window)' failed
+2009-01-22 00:23:29,297 INFO  org.carrot2.util.xml.TemplatesPool: XSLT transformer factory: com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl
+2009-01-22 00:23:29,945 INFO  org.carrot2.clustering.lingo.LingoClusteringAlgorithm: Native BLAS routines not available
+/usr/libexec/Carrot2 Workbench: No such file or directory.
+--------------------------------------------------

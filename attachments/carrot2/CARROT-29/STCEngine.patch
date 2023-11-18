@@ -1,0 +1,49 @@
+Index: C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/algorithm/STCEngine.java
+===================================================================
+--- C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/algorithm/STCEngine.java	(revision 1620)
++++ C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/algorithm/STCEngine.java	(working copy)
+@@ -201,7 +201,7 @@
+                 // The phrase length is corrected with a function. The original
+                 // STC algorithm uses linear gradient. I modify it here to penalize
+                 // very long phrases (which usually denote repeated snippets). 
+-                final float score = calculateModifiedBaseClusterScore(effectivePhraseLength, suffixedDocumentsCount);
++                final float score = calculateModifiedBaseClusterScore(effectivePhraseLength, suffixedDocumentsCount, params);
+                 // final float score = calculateOriginalBaseClusterScore(effectivePhraseLength, suffixedDocumentsCount);
+ 
+                 if (score > minBaseClusterScore) {
+@@ -302,14 +302,14 @@
+      * replot
+      * </pre>
+      */
+-    private float calculateModifiedBaseClusterScore(final int effectivePhraseLength, final int documentCount) {
+-        final double SINGLE_WORD_BOOST = 0.5f;
+-        final int optimalPhraseLength = 3;
+-        final int optimalPhraseLengthDev = 2;
++    private float calculateModifiedBaseClusterScore(final int effectivePhraseLength, final int documentCount, StcParameters params) {
++        final double singleWordBoost = params.getSingleWordScore();
++        final int optimalPhraseLength = params.getOptimalPhraseLength();
++        final int optimalPhraseLengthDev = params.getOptimalPhraseLengthDev();
+ 
+         final double boost;
+         if (effectivePhraseLength == 1) {
+-            boost = SINGLE_WORD_BOOST;
++            boost = singleWordBoost;
+         } else {
+             final int tmp = effectivePhraseLength - optimalPhraseLength;
+             boost = Math.exp((-tmp * tmp) / (double) (2*optimalPhraseLengthDev*optimalPhraseLengthDev));
+@@ -321,12 +321,12 @@
+     /**
+      * Calculates base cluster score using the original formula used in STC paper. 
+      */
+-    private float calculateOriginalBaseClusterScore(final int effectivePhraseLength, final int documentCount) {
++    private float calculateOriginalBaseClusterScore(final int effectivePhraseLength, final int documentCount, StcParameters params) {
+         // Original STC base cluster scoring formula.
+-        final double SINGLE_WORD_BOOST = 0.5f;
++        final double singleWordBoost = params.getSingleWordScore();
+         double boost;
+         if (effectivePhraseLength == 1) {
+-            boost = SINGLE_WORD_BOOST;
++            boost = singleWordBoost;
+         } else if (effectivePhraseLength >= 6) {
+             boost = 1;
+         } else {

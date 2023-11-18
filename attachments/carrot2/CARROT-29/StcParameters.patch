@@ -1,0 +1,87 @@
+Index: C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/StcParameters.java
+===================================================================
+--- C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/StcParameters.java	(revision 1620)
++++ C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/StcParameters.java	(working copy)
+@@ -73,6 +73,12 @@
+ 	 */
+ 	private int maxDescPhraseLength;
+ 
++	private float singleWordScore;
++
++	private int optimalPhraseLength;
++	
++	private int optimalPhraseLengthDev;
++
+     /**
+      * Creates a new objects with default settings.
+      */
+@@ -87,6 +93,9 @@
+         this.maxPhraseOverlap = StcConstants.DEFAULT_MAX_PHRASE_OVERLAP;
+         this.mostGeneralPhraseCoverage = StcConstants.DEFAULT_MOST_GENERAL_PHRASE_COVERAGE;
+         this.maxDescPhraseLength = StcConstants.DEFAULT_MAX_PHRASE_LENGTH;
++        this.singleWordScore = StcConstants.DEFAULT_SINGLE_WORD_SCORE;
++        this.optimalPhraseLength = StcConstants.DEFAULT_OPTIMAL_PHRASE_LENGTH;
++        this.optimalPhraseLengthDev = StcConstants.DEFAULT_OPTIMAL_PHRASE_LENGTH_DEV;
+     }
+ 
+     public static StcParameters fromMap(Map map) {
+@@ -178,6 +187,31 @@
+             }
+         }      
+ 
++        value = (String) map.get(StcConstants.SINGLE_WORD_SCORE);
++        if (value != null) {
++            params.singleWordScore = Float.parseFloat(value);
++            if (params.singleWordScore < 0.0d
++                    || params.singleWordScore > 1.0d) {
++                throw new RuntimeException("Illegal value range.");
++            }
++        }
++
++        value = (String) map.get(StcConstants.OPTIMAL_PHRASE_LENGTH);
++        if (value != null) {
++            params.optimalPhraseLength = Integer.parseInt(value);
++            if (params.optimalPhraseLength < 0) {
++                throw new RuntimeException("Illegal value range.");
++            }
++        }
++
++        value = (String) map.get(StcConstants.OPTIMAL_PHRASE_LENGTH_DEV);
++        if (value != null) {
++            params.optimalPhraseLengthDev = Integer.parseInt(value);
++            if (params.optimalPhraseLengthDev < 0) {
++                throw new RuntimeException("Illegal value range.");
++            }
++        }
++
+         return params;
+     }
+     
+@@ -193,6 +227,9 @@
+         map.put(StcConstants.MAX_PHRASE_OVERLAP, Double.toString(getMaxPhraseOverlap()));
+         map.put(StcConstants.MOST_GENERAL_PHRASE_COVERAGE, Double.toString(getMostGeneralPhraseCoverage()));
+         map.put(StcConstants.MAX_PHRASE_LENGTH, Integer.toString(getMaxDescPhraseLength()));
++        map.put(StcConstants.SINGLE_WORD_SCORE, Float.toString(getSingleWordScore()));
++        map.put(StcConstants.OPTIMAL_PHRASE_LENGTH, Integer.toString(getOptimalPhraseLength()));
++        map.put(StcConstants.OPTIMAL_PHRASE_LENGTH_DEV, Integer.toString(getOptimalPhraseLengthDev()));
+         return map;
+     }
+ 
+@@ -235,4 +272,17 @@
+ 	public int getMaxDescPhraseLength() {
+ 		return maxDescPhraseLength;
+ 	}
++
++    public float getSingleWordScore() {
++        return singleWordScore;
++    }
++
++    public int getOptimalPhraseLength() {
++        return optimalPhraseLength;
++    }
++
++    public int getOptimalPhraseLengthDev() {
++        return optimalPhraseLengthDev;
++    }
++
+ }

@@ -1,0 +1,17 @@
+<attribute-sets>
+  <attribute-set id="jobs">
+    <value-set>
+      <label>Jobs</label>
+      <attribute key="OpenSearchDocumentSource.feedUrlTemplate">
+        <value type="java.lang.String" value="http://searchdev10.na.atkinsglobal.com/_layouts/srchrss.aspx?k=${searchTerms}&amp;s=All%20Sites&amp;start=${startIndex}&amp;a=&amp;es=1&amp;source=http://searchdev10.na.atkinsglobal.com/Pages/results.aspx?k=${searchTerms}&amp;provider=FASTSearch" />
+		<!-- <value type="java.lang.String" value="http://search.na.atkinsglobal.com/_layouts/srchrss.aspx?k=${searchTerms}&amp;start=${startIndex}&amp;web.count=${count}" /> -->
+	  </attribute>
+      <attribute key="OpenSearchDocumentSource.resultsPerPage">
+        <value type="java.lang.Integer" value="500" />
+      </attribute>
+      <attribute key="OpenSearchDocumentSource.maximumResults">
+        <value type="java.lang.Integer" value="4000" />
+      </attribute>
+    </value-set>
+  </attribute-set>
+</attribute-sets>

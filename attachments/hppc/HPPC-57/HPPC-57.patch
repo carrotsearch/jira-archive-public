@@ -1,0 +1,526 @@
+diff --git a/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectAssociativeContainer.java b/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectAssociativeContainer.java
+index afd408c..818c105 100644
+--- a/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectAssociativeContainer.java
++++ b/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectAssociativeContainer.java
+@@ -7,10 +7,11 @@ import com.carrotsearch.hppc.predicates.*;
+ import com.carrotsearch.hppc.procedures.*;
+ 
+ /**
+- * An associative container (alias: map, dictionary) from keys to values. Object keys must
+- * fulfill the contract of {@link Object#hashCode()} and {@link Object#equals(Object)}.
++ * An associative container (alias: map, dictionary) from keys to (one or possibly more) values. 
++ * Object keys must fulfill the contract of {@link Object#hashCode()} and {@link Object#equals(Object)}.
+  * 
+  * @see ObjectContainer
++ * @see ObjectObjectMap
+  */
+ public interface ObjectObjectAssociativeContainer<KType, VType> 
+     extends Iterable<ObjectObjectCursor<KType, VType>>
+@@ -32,6 +33,9 @@ public interface ObjectObjectAssociativeContainer<KType, VType>
+     * <p>The <code>index</code> field inside the cursor gives the internal index inside
+     * the container's implementation. The interpretation of this index depends on 
+     * to the container.  
++    * 
++    * <p>Note that associative containers (like multimaps) may return the same key-value pair
++    * multiple times.
+     */
+     @Override
+     public Iterator<ObjectObjectCursor<KType, VType>> iterator();
+@@ -87,11 +91,22 @@ public interface ObjectObjectAssociativeContainer<KType, VType>
+      * Clear all keys and values in the container.
+      */
+     public void clear();
+-    
++
+     /**
+-     * Returns a collection of keys of this container. The returned collection is a view
+-     * over the key set, any modifications introduced to the collection will propagate to the
+-     * map immediately.
++     * @deprecated Use {@link #keys()} instead. This method will be removed in 0.5.0.
+      */
++    @Deprecated
+     public ObjectCollection<KType> keySet();
++
++    /**
++     * Returns a collection of keys of this container. The returned collection is a view
++     * over the key set.
++     */
++    public ObjectCollection<KType> keys();
++
++    /**
++     * Returns a container view of all values present in this container. The returned object
++     * is a view over the values.
++     */
++    public ObjectContainer<VType> values();
+ }
+diff --git a/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectOpenHashMap.java b/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectOpenHashMap.java
+index ad10df2..e3560d8 100644
+--- a/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectOpenHashMap.java
++++ b/hppc-core/src/main/java/com/carrotsearch/hppc/ObjectObjectOpenHashMap.java
+@@ -793,10 +793,21 @@ public class ObjectObjectOpenHashMap<KType, VType>
+     }
+ 
+     /**
++     * {@inheritDoc}
++     */
++    @Override
++    @Deprecated
++    public KeySet keySet()
++    {
++        return new KeySet();
++    }
++    
++    /**
+      * Returns a specialized view of the keys of this associated container. 
+      * The view additionally implements {@link ObjectLookupContainer}.
+      */
+-    public KeySet keySet()
++    @Override
++    public KeySet keys()
+     {
+         return new KeySet();
+     }
+@@ -807,9 +818,6 @@ public class ObjectObjectOpenHashMap<KType, VType>
+     public final class KeySet 
+         extends AbstractObjectCollection<KType> implements ObjectLookupContainer<KType>
+     {
+-        private final ObjectObjectOpenHashMap<KType, VType> owner = 
+-            ObjectObjectOpenHashMap.this;
+-        
+         @Override
+         public boolean contains(KType e)
+         {
+@@ -819,8 +827,8 @@ public class ObjectObjectOpenHashMap<KType, VType>
+         @Override
+         public <T extends ObjectProcedure<? super KType>> T forEach(T procedure)
+         {
+-            final KType [] localKeys = owner.keys;
+-            final boolean [] localStates = owner.allocated;
++            final KType [] localKeys = keys;
++            final boolean [] localStates = allocated;
+ 
+             for (int i = 0; i < localStates.length; i++)
+             {
+@@ -834,8 +842,8 @@ public class ObjectObjectOpenHashMap<KType, VType>
+         @Override
+         public <T extends ObjectPredicate<? super KType>> T forEach(T predicate)
+         {
+-            final KType [] localKeys = owner.keys;
+-            final boolean [] localStates = owner.allocated;
++            final KType [] localKeys = keys;
++            final boolean [] localStates = allocated;
+ 
+             for (int i = 0; i < localStates.length; i++)
+             {
+@@ -852,7 +860,7 @@ public class ObjectObjectOpenHashMap<KType, VType>
+         @Override
+         public boolean isEmpty()
+         {
+-            return owner.isEmpty();
++            return ObjectObjectOpenHashMap.this.isEmpty();
+         }
+ 
+         @Override
+@@ -864,29 +872,29 @@ public class ObjectObjectOpenHashMap<KType, VType>
+         @Override
+         public int size()
+         {
+-            return owner.size();
++            return ObjectObjectOpenHashMap.this.size();
+         }
+ 
+         @Override
+         public void clear()
+         {
+-            owner.clear();
++            ObjectObjectOpenHashMap.this.clear();
+         }
+ 
+         @Override
+         public int removeAll(ObjectPredicate<? super KType> predicate)
+         {
+-            return owner.removeAll(predicate);
++            return ObjectObjectOpenHashMap.this.removeAll(predicate);
+         }
+ 
+         @Override
+         public int removeAllOccurrences(final KType e)
+         {
+-            final boolean hasKey = owner.containsKey(e);
++            final boolean hasKey = ObjectObjectOpenHashMap.this.containsKey(e);
+             int result = 0;
+             if (hasKey)
+             {
+-                owner.remove(e);
++                ObjectObjectOpenHashMap.this.remove(e);
+                 result = 1;
+             }
+             return result;
+@@ -953,6 +961,166 @@ public class ObjectObjectOpenHashMap<KType, VType>
+      * {@inheritDoc}
+      */
+     @Override
++    public ObjectContainer<VType> values()
++    {
++        return new ValuesContainer();
++    }
++
++    /**
++     * A view over the set of values.
++     */
++    private final class ValuesContainer extends AbstractObjectCollection<VType>
++    {
++        @Override
++        public int size()
++        {
++            return ObjectObjectOpenHashMap.this.size();
++        }
++
++        @Override
++        public boolean isEmpty()
++        {
++            return ObjectObjectOpenHashMap.this.isEmpty();
++        }
++
++        @Override
++        public boolean contains(VType value)
++        {
++            // This is a linear scan over the values, but it's in the contract, so be it.
++            final boolean [] allocated = ObjectObjectOpenHashMap.this.allocated;
++            final VType [] values = ObjectObjectOpenHashMap.this.values;
++
++            for (int slot = 0; slot < allocated.length; slot++)
++            {
++                if (allocated[slot] && 
++                    /* replaceIf:primitiveKType 
++                    (values[slot] == value) */ 
++                    value == null ? values[slot] == null : value.equals(values[slot]) /* end:replaceIf */)
++                {
++                    return true;
++                }
++            }
++            return false;
++        }
++
++        @Override
++        public <T extends ObjectProcedure<? super VType>> T forEach(T procedure)
++        {
++            final boolean [] allocated = ObjectObjectOpenHashMap.this.allocated;
++            final VType [] values = ObjectObjectOpenHashMap.this.values;
++
++            for (int i = 0; i < allocated.length; i++)
++            {
++                if (allocated[i])
++                    procedure.apply(values[i]);
++            }
++
++            return procedure;
++        }
++
++        @Override
++        public <T extends ObjectPredicate<? super VType>> T forEach(T predicate)
++        {
++            final boolean [] allocated = ObjectObjectOpenHashMap.this.allocated;
++            final VType [] values = ObjectObjectOpenHashMap.this.values;
++
++            for (int i = 0; i < allocated.length; i++)
++            {
++                if (allocated[i])
++                {
++                    if (!predicate.apply(values[i]))
++                        break;
++                }
++            }
++
++            return predicate;
++        }
++
++        @Override
++        public Iterator<ObjectCursor<VType>> iterator()
++        {
++            return new ValuesIterator();
++        }
++
++        @Override
++        public int removeAllOccurrences(VType e)
++        {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public int removeAll(ObjectPredicate<? super VType> predicate)
++        {
++            throw new UnsupportedOperationException();
++        }
++
++        @Override
++        public void clear()
++        {
++            throw new UnsupportedOperationException();
++        }
++    }
++    
++    /**
++     * An iterator over the set of assigned values.
++     */
++    private final class ValuesIterator implements Iterator<ObjectCursor<VType>>
++    {
++        private final static int NOT_CACHED = -1;
++        private final static int AT_END = -2;
++
++        private final ObjectCursor<VType> cursor;
++
++        /** The next valid index or {@link #NOT_CACHED} if not available. */
++        private int nextIndex = NOT_CACHED;
++
++        public ValuesIterator()
++        {
++            cursor = new ObjectCursor<VType>();
++            cursor.index = NOT_CACHED;
++        }
++
++        public boolean hasNext()
++        {
++            if (nextIndex == NOT_CACHED)
++            {
++                // Advance from current cursor's position.
++                int i = cursor.index + 1;
++                while (i < keys.length && !allocated[i])
++                {
++                    i++;
++                }
++                nextIndex = (i != keys.length ? i : AT_END);
++            }
++
++            return nextIndex != AT_END;
++        }
++
++        public ObjectCursor<VType> next()
++        {
++            if (!hasNext())
++                throw new NoSuchElementException();
++
++            cursor.index = nextIndex;
++            cursor.value = values[nextIndex];
++
++            nextIndex = NOT_CACHED;
++            return cursor;
++        }
++
++        public void remove()
++        {
++            /* 
++             * Use closures and other more efficient alternatives.
++             */
++            throw new UnsupportedOperationException();
++        }
++    }
++
++    /**
++     * {@inheritDoc}
++     */
++    @Override
+     public ObjectObjectOpenHashMap<KType, VType> clone()
+     {
+         try
+diff --git a/hppc-core/src/test/java/com/carrotsearch/hppc/APIExpectationsTest.java b/hppc-core/src/test/java/com/carrotsearch/hppc/APIExpectationsTest.java
+index c2b7da3..490e65b 100644
+--- a/hppc-core/src/test/java/com/carrotsearch/hppc/APIExpectationsTest.java
++++ b/hppc-core/src/test/java/com/carrotsearch/hppc/APIExpectationsTest.java
+@@ -32,7 +32,7 @@ public class APIExpectationsTest
+         isObjectArray(ObjectOpenHashSet.from(1, 2, 3).toArray());
+ 
+         isObjectArray(ObjectObjectOpenHashMap.from(
+-            new Integer [] {1, 2}, new Long [] {1L, 2L}).keySet().toArray());
++            new Integer [] {1, 2}, new Long [] {1L, 2L}).keys().toArray());
+     }
+ 
+     @Test
+@@ -44,9 +44,9 @@ public class APIExpectationsTest
+         isIntegerArray(ObjectOpenHashSet.from(1, 2, 3).toArray(Integer.class));
+ 
+         isIntegerArray(ObjectObjectOpenHashMap.from(
+-            new Integer [] {1, 2}, new Long [] {1L, 2L}).keySet().toArray(Integer.class));
++            new Integer [] {1, 2}, new Long [] {1L, 2L}).keys().toArray(Integer.class));
+     }
+-    
++
+     @Test
+     public void testWildcards()
+     {
+diff --git a/hppc-core/src/test/java/com/carrotsearch/hppc/ObjectObjectOpenHashMapTest.java b/hppc-core/src/test/java/com/carrotsearch/hppc/ObjectObjectOpenHashMapTest.java
+index ba3b446..e445b28 100644
+--- a/hppc-core/src/test/java/com/carrotsearch/hppc/ObjectObjectOpenHashMapTest.java
++++ b/hppc-core/src/test/java/com/carrotsearch/hppc/ObjectObjectOpenHashMapTest.java
+@@ -27,9 +27,9 @@ public class ObjectObjectOpenHashMapTest
+     /* replaceIf:primitiveKType KType */ Object /* end:replaceIf */ key3 = 3;
+     /* replaceIf:primitiveKType KType */ Object /* end:replaceIf */ key4 = 4;
+ 
+-    /* replaceIf:primitiveVType VType */ Object /* end:replaceIf */ value1 = 1;
+-    /* replaceIf:primitiveVType VType */ Object /* end:replaceIf */ value2 = 2;
+-    /* replaceIf:primitiveVType VType */ Object /* end:replaceIf */ value3 = 3;
++    /* replaceIf:primitiveVType VType */ Object /* end:replaceIf */ value1 = 10;
++    /* replaceIf:primitiveVType VType */ Object /* end:replaceIf */ value2 = 20;
++    /* replaceIf:primitiveVType VType */ Object /* end:replaceIf */ value3 = 30;
+ 
+     /**
+      * Require assertions for all tests.
+@@ -335,7 +335,7 @@ public class ObjectObjectOpenHashMapTest
+         map.put(key2, value1);
+         map.put(key3, value1);
+ 
+-        map.keySet().removeAll(new ObjectPredicate<Object>()
++        map.keys().removeAll(new ObjectPredicate<Object>()
+         {
+             public boolean apply(/* replaceIf:primitiveKType KType */ Object /* end:replaceIf */ value)
+             {
+@@ -360,7 +360,7 @@ public class ObjectObjectOpenHashMapTest
+         map2.put(key2, value1);
+         map2.put(key4, value1);
+ 
+-        assertEquals(2, map.keySet().retainAll(map2.keySet()));
++        assertEquals(2, map.keys().retainAll(map2.keys()));
+ 
+         assertEquals(1, map.size());
+         assertTrue(map.containsKey(key2));
+@@ -368,25 +368,25 @@ public class ObjectObjectOpenHashMapTest
+ 
+     /* */
+     @Test
+-    public void testMapKeySet()
++    public void testMapKeys()
+     {
+         map.put(key1, value3);
+         map.put(key2, value2);
+         map.put(key3, value1);
+ 
+-        assertSortedListEquals(map.keySet().toArray(), key1, key2, key3);
++        assertSortedListEquals(map.keys().toArray(), key1, key2, key3);
+     }
+ 
+     /* */
+     @Test
+-    public void testMapKeySetIterator()
++    public void testMapKeysIterator()
+     {
+         map.put(key1, value3);
+         map.put(key2, value2);
+         map.put(key3, value1);
+ 
+         int counted = 0;
+-        for (ObjectCursor<Object> c : map.keySet())
++        for (ObjectCursor<Object> c : map.keys())
+         {
+             assertEquals2(map.keys[c.index], c.value);
+             counted++;
+@@ -396,6 +396,79 @@ public class ObjectObjectOpenHashMapTest
+ 
+     /* */
+     @Test
++    public void testMapValues()
++    {
++        map.put(key1, value3);
++        map.put(key2, value2);
++        map.put(key3, value1);
++        assertSortedListEquals(map.values().toArray(), value1, value2, value3);
++
++        map.clear();
++        map.put(key1, value1);
++        map.put(key2, value2);
++        map.put(key3, value2);
++        assertSortedListEquals(map.values().toArray(), value1, value2, value2);        
++    }
++
++    /* */
++    @Test
++    public void testMapValuesIterator()
++    {
++        map.put(key1, value3);
++        map.put(key2, value2);
++        map.put(key3, value1);
++
++        int counted = 0;
++        for (ObjectCursor<Object> c : map.values())
++        {
++            assertEquals2(map.values[c.index], c.value);
++            counted++;
++        }
++        assertEquals(counted, map.size());
++    }
++
++    /* */
++    @Test
++    public void testMapValuesContainer()
++    {
++        map.put(key1, value1);
++        map.put(key2, value2);
++        map.put(key3, value2);
++
++        // contains()
++        for (ObjectObjectCursor<Object, Object> c : map)
++            assertTrue(map.values().contains(c.value));
++        assertFalse(map.values().contains(value3));
++        
++        assertEquals(map.isEmpty(), map.values().isEmpty());
++        assertEquals(map.size(), map.values().size());
++
++        final ObjectArrayList<Object> values = new ObjectArrayList<Object>();
++        map.values().forEach(new ObjectProcedure<Object>()
++            {
++                public void apply(
++                    /* replaceIf:primitiveKType VType */ Object /* end:replaceIf */ value)
++                {
++                    values.add(value);
++                }
++            });
++        assertSortedListEquals(map.values().toArray(), value1, value2, value2);
++
++        values.clear();
++        map.values().forEach(new ObjectPredicate<Object>()
++            {
++                public boolean apply(
++                    /* replaceIf:primitiveKType VType */ Object /* end:replaceIf */ value)
++                {
++                    values.add(value);
++                    return true;
++                }
++            });
++        assertSortedListEquals(map.values().toArray(), value1, value2, value2);
++    }
++
++    /* */
++    @Test
+     public void testClear()
+     {
+         map.put(key1, value1);
+@@ -553,7 +626,10 @@ public class ObjectObjectOpenHashMapTest
+     @Test
+     public void testAgainstHashMap()
+     {
+-        final Random rnd = new Random(0x11223344);
++        long seed = System.currentTimeMillis();
++        System.out.println("Seed: " + seed);
++
++        final Random rnd = new Random();
+         final java.util.HashMap<Integer, Integer> other = 
+             new java.util.HashMap<Integer, Integer>();
+ 
+@@ -600,8 +676,8 @@ public class ObjectObjectOpenHashMapTest
+         ObjectObjectOpenHashMap<Object, Object> cloned = map.clone();
+         cloned.remove(key1);
+ 
+-        assertSortedListEquals(map.keySet().toArray(), key1, key2, key3);
+-        assertSortedListEquals(cloned.keySet().toArray(), key2, key3);
++        assertSortedListEquals(map.keys().toArray(), key1, key2, key3);
++        assertSortedListEquals(cloned.keys().toArray(), key2, key3);
+     }
+ 
+     /*
+@@ -629,6 +705,6 @@ public class ObjectObjectOpenHashMapTest
+         asString = asString.replaceAll("[^0-9]", "");
+         char [] asCharArray = asString.toCharArray();
+         Arrays.sort(asCharArray);
+-        assertEquals("1122", new String(asCharArray));
++        assertEquals("001122", new String(asCharArray));
+     }
+ }

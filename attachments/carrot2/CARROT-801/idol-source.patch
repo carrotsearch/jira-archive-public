@@ -1,0 +1,188 @@
+Index: applications/carrot2-webapp/src/org/carrot2/webapp/model/RequestModel.java
+===================================================================
+--- applications/carrot2-webapp/src/org/carrot2/webapp/model/RequestModel.java	(revision 4906)
++++ applications/carrot2-webapp/src/org/carrot2/webapp/model/RequestModel.java	(working copy)
+@@ -56,6 +56,11 @@
+     public int results;
+ 
+     @Input
++    @Attribute(key = AttributeNames.USER_NAME)
++    @org.simpleframework.xml.Attribute(required = false)
++    public String userName;
++    
++    @Input
+     @Attribute(key = WebappConfig.SOURCE_PARAM)
+     @org.simpleframework.xml.Attribute
+     public String source;
+@@ -77,6 +82,7 @@
+     @Input
+     @Attribute(key = QueryProcessorServlet.STATS_KEY)
+     public String statsKey;
++    
+ 
+     @org.simpleframework.xml.Attribute
+     public boolean modern = true;
+Index: applications/carrot2-webapp/src/org/carrot2/webapp/QueryProcessorServlet.java
+===================================================================
+--- applications/carrot2-webapp/src/org/carrot2/webapp/QueryProcessorServlet.java	(revision 4906)
++++ applications/carrot2-webapp/src/org/carrot2/webapp/QueryProcessorServlet.java	(working copy)
+@@ -119,6 +119,7 @@
+     private final static String UTF8 = "UTF-8";
+     private final static String MIME_XML_UTF8 = "text/xml; charset=" + UTF8;
+     private final static String MIME_TEXT_PLAIN_UTF8 = "text/plain; charset=" + UTF8;
++    public final static String USER_NAME = "userName";
+ 
+     /*
+      * Servlet lifecycle.
+@@ -235,6 +236,9 @@
+             // Build model for this request
+             final RequestModel requestModel = new RequestModel(webappConfig);
+             requestModel.modern = UserAgentUtils.isModernBrowser(request);
++            
++            //Set the userName based on the logged in user 
++            requestModel.userName = request.getRemoteUser();
+ 
+             // Request type is normally bound to the model, but we need to know
+             // the type before binding to choose the unknown values resolution strategy
+@@ -404,6 +408,9 @@
+         // Add some values in case there was no query parameters -- we want to use the
+         // web application defaults and not component defaults.
+         requestParameters.put(AttributeNames.RESULTS, requestModel.results);
++        
++        //Add the userName to the request parameters
++        requestParameters.put(AttributeNames.USER_NAME, requestModel.userName);
+ 
+         // Remove values corresponding to internal attributes
+         requestParameters.keySet().removeAll(
+Index: core/carrot2-component-suites/suites/source-idol-attributes.xml
+===================================================================
+--- core/carrot2-component-suites/suites/source-idol-attributes.xml	(revision 0)
++++ core/carrot2-component-suites/suites/source-idol-attributes.xml	(revision 0)
+@@ -0,0 +1,61 @@
++<attribute-sets>
++	<attribute-set id="idolsearch">
++		<value-set>
++			<label>IDOL</label>
++			   <attribute key="results-total">
++			      <value type="java.lang.Long" value="-1"/>
++			   </attribute>
++			   <attribute key="SearchEngineBase.compressed">
++			      <value type="java.lang.Boolean" value="false"/>
++			   </attribute>
++			   <attribute key="processing-time-source">
++			      <value type="java.lang.Long" value="0"/>
++			   </attribute>
++			   <attribute key="IdolDocumentSource.idolServerName">
++			      <value value="servername"/>
++			   </attribute>
++			   <attribute key="IdolDocumentSource.idolServerPort">
++			      <value type="java.lang.Integer" value="9000"/>
++			   </attribute>
++			   <attribute key="IdolDocumentSource.xslTemplateName">
++			      <value value="RSS"/>
++			   </attribute>
++			   <attribute key="IdolDocumentSource.otherSearchAttributes">
++			      <value value="summary=context&amp;combine=simple"/>
++			   </attribute>v			   
++			   <attribute key="IdolDocumentSource.resultsPerPage">
++			      <value type="java.lang.Integer" value="50"/>
++			   </attribute>
++			   <attribute key="IdolDocumentSource.minScore">
++			      <value type="java.lang.Integer" value="80"/>
++			   </attribute>
++			   <attribute key="LingoClusteringAlgorithm.nativeMatrixUsed">
++			      <value type="java.lang.Boolean" value="true"/>
++			   </attribute>
++			   <attribute key="search-mode">
++			      <value value="SPECULATIVE"/>
++			   </attribute>
++			   <attribute key="processing-time-total">
++			      <value type="java.lang.Long" value="16"/>
++			   </attribute>
++			   <attribute key="results">
++			      <value type="java.lang.Integer" value="700"/>
++			   </attribute>
++			   <attribute key="processing-time-algorithm">
++			      <value type="java.lang.Long" value="16"/>
++			   </attribute>
++			   <attribute key="start">
++			      <value type="java.lang.Integer" value="0"/>
++			   </attribute>
++			   <attribute key="SearchEngineStats.pageRequests">
++			      <value type="java.lang.Integer" value="28"/>
++			   </attribute>
++			   <attribute key="IdolDocumentSource.maximumResults">
++			      <value type="java.lang.Integer" value="500"/>
++			   </attribute>
++			   <attribute key="SearchEngineStats.queries">
++			      <value type="java.lang.Integer" value="2"/>
++			   </attribute>
++		</value-set>
++	</attribute-set>
++</attribute-sets>
+\ No newline at end of file
+Index: core/carrot2-component-suites/suites/source-idolsearch.xml
+===================================================================
+--- core/carrot2-component-suites/suites/source-idolsearch.xml	(revision 0)
++++ core/carrot2-component-suites/suites/source-idolsearch.xml	(revision 0)
+@@ -0,0 +1,13 @@
++<component-suite>
++  <sources>
++    <!-- Generic (uninitialized) instance of OpenSearchDocumentSource -->
++    <source component-class="org.carrot2.source.idol.IdolDocumentSource" id="idolSearch" attribute-sets-resource="source-idol-attributes.xml">>
++      <label>IDOL Search</label>
++      <title>IDOL Search</title>
++      <description>
++        IDOL document source retrieves search results from Autonomy IDOL search engines supporting
++        the OpenSearch standard.
++      </description>
++    </source>
++  </sources>
++</component-suite>
+Index: core/carrot2-core/src/org/carrot2/core/attribute/AttributeNames.java
+===================================================================
+--- core/carrot2-core/src/org/carrot2/core/attribute/AttributeNames.java	(revision 4906)
++++ core/carrot2-core/src/org/carrot2/core/attribute/AttributeNames.java	(working copy)
+@@ -34,8 +34,12 @@
+      * @see CommonAttributesDescriptor.Keys#QUERY
+      */
+     public static final String QUERY = "query";
+-
++    
+     /**
++     * @see CommonAttributesDescriptor.Keys#USER_NAME
++     */
++    public static final String USER_NAME = "userName";
++    /**
+      * @see CommonAttributesDescriptor.Keys#RESULTS_TOTAL
+      */
+     public static final String RESULTS_TOTAL = "results-total";
+Index: core/carrot2-core/src/org/carrot2/core/attribute/CommonAttributes.java
+===================================================================
+--- core/carrot2-core/src/org/carrot2/core/attribute/CommonAttributes.java	(revision 4906)
++++ core/carrot2-core/src/org/carrot2/core/attribute/CommonAttributes.java	(working copy)
+@@ -65,7 +65,7 @@
+     @Input
+     @Attribute(key = "query")
+     public String query;
+-
++    
+     /**
+      * Estimated total number of matching documents.
+      * 
+Index: core/carrot2-core/src/org/carrot2/source/SearchEngineBase.java
+===================================================================
+--- core/carrot2-core/src/org/carrot2/source/SearchEngineBase.java	(revision 4906)
++++ core/carrot2-core/src/org/carrot2/source/SearchEngineBase.java	(working copy)
+@@ -54,6 +54,11 @@
+     @Required
+     @NotBlank
+     public String query;
++    
++    @Processing
++    @Input
++    @Attribute(key = AttributeNames.USER_NAME)
++    public String userName;
+ 
+     @Processing
+     @Output

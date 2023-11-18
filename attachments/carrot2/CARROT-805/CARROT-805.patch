@@ -1,0 +1,1042 @@
+diff --git a/core/carrot2-util-common/src-test/org/carrot2/util/httpclient/DummyTest.java b/core/carrot2-util-common/src-test/org/carrot2/util/httpclient/DummyTest.java
+new file mode 100644
+index 0000000..94643a2
+--- /dev/null
++++ b/core/carrot2-util-common/src-test/org/carrot2/util/httpclient/DummyTest.java
+@@ -0,0 +1,112 @@
++
++/*
++ * Carrot2 project.
++ *
++ * Copyright (C) 2002-2011, Dawid Weiss, Stanisław Osiński.
++ * All rights reserved.
++ *
++ * Refer to the full license file "carrot2.LICENSE"
++ * in the root folder of the repository checkout or at:
++ * http://www.carrot2.org/carrot2.LICENSE
++ */
++
++package org.carrot2.util.httpclient;
++
++import java.io.*;
++import java.net.*;
++import java.util.ArrayList;
++
++import org.carrot2.util.CloseableUtils;
++import org.carrot2.util.StreamUtils;
++import org.carrot2.util.httpclient.HttpUtils.Response;
++import org.junit.*;
++
++import com.google.common.collect.Lists;
++
++/**
++ * 
++ */
++public class DummyTest
++{
++    private static Thread pseudoServer;
++
++    private static ServerSocket serverSocket;
++
++    private static ArrayList<Socket> sockets = Lists.newArrayList();
++
++    @BeforeClass
++    public static void setup() throws Exception
++    {
++        serverSocket = new ServerSocket(45355);
++
++        pseudoServer = new Thread()
++        {
++            public void run()
++            {
++                try
++                {
++                    System.out.println("Waiting.");
++                    Socket socket;
++                    while ((socket = serverSocket.accept()) != null)
++                    {
++                        sockets.add(socket);
++                        
++                        System.out.println("Accepted.");
++                        InputStream in = socket.getInputStream();
++                        
++                        int eol = 0;
++                        while (eol < 2)
++                        {
++                            int chr = in.read();
++                            if (chr == 13) continue;
++                            if (chr == '\n') {
++                                eol++;
++                            } else eol = 0;
++                        }
++                        System.out.println("Writing output.");
++
++                        OutputStream os = socket.getOutputStream();
++                        InputStream resourceAsStream = this.getClass().getResourceAsStream("out");
++                        StreamUtils.copy(resourceAsStream, os, 1024);
++
++                        in.close();
++                        os.close();
++
++                        System.out.println("Done");
++                    }
++                }
++                catch (SocketException e)
++                {
++                    // Ignore, socket closed.
++                }
++                catch (IOException e)
++                {
++                    throw new RuntimeException();
++                }
++            }
++        };
++        pseudoServer.start();
++    }
++
++    @AfterClass
++    public static void cleanup() throws Exception
++    {
++        serverSocket.close();
++        pseudoServer.interrupt();
++
++        while (!sockets.isEmpty())
++        {
++            CloseableUtils.close(sockets.remove(sockets.size() - 1));
++        }
++    }
++
++    /**
++     * Verify that the connection timeout is working.
++     */
++    @Test
++    public void testTimeOut() throws Exception
++    {
++        Response doGET = HttpUtils.doGET("http://127.0.0.1:45355", null, null);
++        System.out.println(doGET.status);
++    }
++}
+diff --git a/core/carrot2-util-common/src-test/org/carrot2/util/httpclient/out b/core/carrot2-util-common/src-test/org/carrot2/util/httpclient/out
+new file mode 100644
+index 0000000..e8f5c4f
+--- /dev/null
++++ b/core/carrot2-util-common/src-test/org/carrot2/util/httpclient/out
+@@ -0,0 +1,905 @@
++HTTP/1.1 200 OK
++Content-Length: 114411
++Content-Type: text/xml; charset=UTF-8
++Pragma: no-cache
++Expires: Fri, 01 Jan 1990 00:00:00 GMT
++Cache-Control: no-cache, no-store, must-revalidate
++Connection: close
++
++<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
++<results count="2266">
++<result>
++  <category>file</category>
++  <title>com.google.Desktop</title>
++  <time>129483252360000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCVioEAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUBhoY&amp;canScale=1&amp;s=zjt54813zUP4T30V6vrgTClFJdU</icon>
++  <url>~/Library/Google/GoogleSoftwareUpdate/Actives/com.google.Desktop</url>
++</result>
++<result>
++  <category>file</category>
++  <title>GoogleDesktopDocumentSourceTest.java</title>
++  <time>129483242460000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPCoEAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=4XkT9DNniynjAoQjWnkKTyE3yfg</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-google-desktop/src-test/org/carrot2/source/google/GoogleDesktopDocumentSourceTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;package org.carrot2.source.&lt;B&gt;google&lt;/B&gt;; import static org.fest &lt;b&gt;…&lt;/b&gt; s=l_8BxOoWYcDVRPvIScRqxkvlJsg&amp;amp;q=&lt;B&gt;google&lt;/B&gt;&amp;amp;format=xml&amp;amp;num=100&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPCoEAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=dJEtYYf0CsuWfh7stY49-L8Vstw</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>HttpUtils.java</title>
++  <time>129483240750000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCMioEAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=dkUyEs8kcQdOwuj19nHGqnMnrHg</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/httpclient/HttpUtils.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;http.params.CoreProtocolPNames; import org.carrot2.util.StreamUtils; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Various utilities for working with HTTP&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCMioEAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=V2xnrlwT4vtV87hMKE_OxZQQptU</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>google</title>
++  <time>129483222380000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC8CkEAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampULhoY&amp;canScale=1&amp;s=DDLr4oGzmUj5NYS7oLXN4RZUpX4</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-google-desktop/tmp/eclipse/org/carrot2/source/google</url>
++</result>
++<result>
++  <category>file</category>
++  <title>google</title>
++  <time>129483222380000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC6SkEAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampULhoY&amp;canScale=1&amp;s=z4F4StXybR16xM9ypVcYqI6gvkA</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-google/tmp/eclipse/org/carrot2/source/google</url>
++</result>
++<result>
++  <category>file</category>
++  <title>pom.xml</title>
++  <time>129483216420000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCd0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=xWS3XPNUyEvSiragiKyZCmy14wY</icon>
++  <url>~/carrot2/carrot2.sf.trunk/etc/maven/poms/pom.xml</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.&lt;B&gt;google&lt;/B&gt;.guava&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt; &lt;b&gt;…&lt;/b&gt; &amp;lt;exclusion&amp;gt; &amp;lt;groupId&amp;gt;com.&lt;B&gt;google&lt;/B&gt;.code.gson&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCd0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=vbImnZ5lwpii9mVnYlvm-roI9i0</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>IdealPartitioningBasedMetric.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNkgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=615ZaR3JhGhjsQtQ4niX-COsIWM</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src/org/carrot2/output/metrics/IdealPartitioningBasedMetric.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;attribute.*; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import com &lt;b&gt;…&lt;/b&gt; base.Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * A base&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNkgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=2BBpmfJ6-NQowc1IW27deNiqDk4</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ContaminationMetric.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNUgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=QmiwJqNiIdPmyjCwfL99_ht0Jpo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src/org/carrot2/output/metrics/ContaminationMetric.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;core.attribute.Processing; import org.carrot2.util.attribute.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Computes cluster contamination. If a cluster&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNUgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=K4RB7wKEz8fNQMvfztgo53uCMqM</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>NormalizedMutualInformationMetric.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=i2ivnwWIR-of6BtVQAnuMvDVPZo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src/org/carrot2/output/metrics/NormalizedMutualInformationMetric.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;attribute.*; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import com &lt;b&gt;…&lt;/b&gt; Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * Computes&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=fgYAzi9bQemlAUmerQ6vOYx3F-U</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>PrecisionRecallMetric.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCM0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=EfnVKGwgvUYPbvyrxmv8ZXu34q4</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src/org/carrot2/output/metrics/PrecisionRecallMetric.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.carrot2.util.MathUtils; import org.carrot2.util.attribute.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * Computes precision, recall and F-metric for all&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCM0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=l4RSZKk2EK5IMxiuvhX7DqxbhAc</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>IdealPartitioningBasedMetricTest.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCMUgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=s11eh2IF9ado32PcwBq44OXTXdQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src-test/org/carrot2/output/metrics/IdealPartitioningBasedMetricTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Sets; /** * Test cases&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCMUgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=VCMqLxcx_wCS0a4gvPRbCnn0P-w</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ContaminationMetricTest.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCMEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=JfP5UjLz9JtPIwZo-qekX4iFPX0</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src-test/org/carrot2/output/metrics/ContaminationMetricTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.carrot2.core.Cluster; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for {@link IClusteringMetric}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCMEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=cZh6ga72C41A9xrOdwixQ7xJEuI</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>NormalizedMutualInformationMetricTest.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCL0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=3iimrR-u9A_JXymKcRNBNkjp2CQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src-test/org/carrot2/output/metrics/NormalizedMutualInformationMetricTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.fest.assertions.Delta; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for {@link IClusteringMetric}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCL0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=izrXZ6ZjkRYoz2q3RbLxUnss4Qk</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>PrecisionRecallMetricTest.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCLkgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Z-663_mBzJrs1YhuUJQHG2tyBYI</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-output-metrics/src-test/org/carrot2/output/metrics/PrecisionRecallMetricTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.fest.assertions.Delta; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for {@link IClusteringMetric}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCLkgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=OdbGcYR8JehA0BUmQJm01bHzVWI</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>BossLanguageCodes.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCKkgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=mhKQt7GCiX5jy3KowQb-mqsUX4w</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-boss/src/org/carrot2/source/boss/BossLanguageCodes.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import org.carrot2.util.attribute.constraint.IValueHintMapping; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Yahoo Boss region and language codes. * * @see &amp;lt;a&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCKkgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=YcsB3drd8tVSt-0daMcgrNTp4mg</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>YSearchResponse.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCJEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=OabZmBnHN9qZkbmUFTyKbMHZARs</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-boss/src/org/carrot2/source/boss/YSearchResponse.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;xml.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Sets; /** * Search&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCJEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=Bydv4XBqqLQMejzjXGxi3wt9J1c</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>BossSearchService.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCI0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=7Z-etU69QUtS-td9nq9D2Rn3E-E</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-boss/src/org/carrot2/source/boss/BossSearchService.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;simpleframework.xml.core.Persister; import org.slf4j.Logger; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * A superclass shared between various Boss verticals&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCI0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=t6_FrICgqj3HYXtrtEW3EMYGrDY</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>MapUtils.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCF0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=fpum3Wfawuem8N34OdUnZ7xZJSQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/MapUtils.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;Map.Entry; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Utilities&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCF0gDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=-3-Ui1Okp5vTLbsxgVYn35epl34</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>GraphUtils.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCDEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=zfCnv8vWjUo_Zg_XvpVk-GxZe3Q</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/GraphUtils.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;hppc.IntArrayDeque; import com.carrotsearch.hppc.IntArrayList; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Various utilities for processing graphs&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCDEgDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=BOdeTrda5pbHAdZyHpeJKFHpUPU</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>SoftUnboundedPool.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC_EcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=wsEWb0o5FO-F4wW9F25KuGukWFE</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/pool/SoftUnboundedPool.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;java.util.Map.Entry; import org.carrot2.util.Pair; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * An extremely simple, unbounded object pool. The pool can&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC_EcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=08rObAa5sCv1aaKFeJc4wTsdgmI</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>FixedSizePool.java</title>
++  <time>129483216320000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC-0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=UEyWc0vZ0BWO-ucjikuj7ibUM8A</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/pool/FixedSizePool.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.Pair; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; collect.Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * An&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC-0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=OXTqekbRKmWmVgo_8dhs0Sq048A</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>FallbackFactory.java</title>
++  <time>129483216310000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC80cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=FtoUaKecECE74PmDoNjkCHEY69g</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/factory/FallbackFactory.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;slf4j.Logger; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; import &lt;b&gt;…&lt;/b&gt; common.base.Predicate; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Throwables&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC80cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=_N0yaj8urXOtPoylwtEOokWzUVI</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ResourceLookup.java</title>
++  <time>129483216240000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCa0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Km9nzb9DdLdmntPp-JXE9w15Sxo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/resource/ResourceLookup.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;ThreadSafe; import org.slf4j.Logger; import org.slf4j.LoggerFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Resource loading utility scanning one or&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCa0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=Sh6sJ6RGNL9FGrPfO6ngK1l_r3Y</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ClassLoaderLocator.java</title>
++  <time>129483216240000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCakcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=CGKq90ORhiCuoTImtX2Y1t9si3M</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/resource/ClassLoaderLocator.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;java.util.Enumeration; import org.apache.commons.lang.ObjectUtils; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Scan for resources relative to a given class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCakcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=0Ux-C2IMmZ_zH1WQyXNZxLUULkE</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ResourceCache.java</title>
++  <time>129483216240000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCZ0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=nLsGrW5CjtfzDOevlEozsbOJnt8</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src/org/carrot2/util/resource/ResourceCache.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;LoggerFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import &lt;b&gt;…&lt;/b&gt; Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.MapMaker; import com&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCZ0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=6KFl3OY94AZiA5Qy0Df2lIlHUvw</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>GraphUtilsTest.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCS0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=kdRqsyXcdy5SrDiIGAJwJdPli4w</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src-test/org/carrot2/util/GraphUtilsTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;Assert.*; import java.util.*; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com.carrotsearch.hppc.IntArrayList; /** * Test cases for&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCS0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=ppon1yFDTXUF_ZW6OheyhIXOuP8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>IndirectSorterTest.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCSkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=bcJVp0nZAN0KANIfdzS4ExNzF_I</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src-test/org/carrot2/util/IndirectSorterTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;IndirectComparator; import com.carrotsearch.hppc.sorting.IndirectSort; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Ordering; /** * Test cases for the legacy (removed) &amp;lt;&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCSkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=eQ_vglin3F7QGbzcuPF9aZu4IJQ</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>HttpClientFactoryTest.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCSEcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=2Kvg1egvIp4PU09uQDBHizCKHdo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src-test/org/carrot2/util/httpclient/HttpClientFactoryTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.fest.assertions.Assertions; import org.junit.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * */ public class HttpClientFactoryTest { private static&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCSEcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=ObHLd1oV2JFxKB88nPywY_9-MPg</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>URLResourceWithParamsTest.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCQkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=BgDTNpKGnMw5GV-Eh7OaB_MfFOQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-common/src-test/org/carrot2/util/resource/URLResourceWithParamsTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;resource.URLResourceWithParams; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Test cases for {@link URLResourceWithParams}. */ public&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCQkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=cU04SN5dJgXGQqiYv9VmX0gMTqc</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>EToolsDocumentSource.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCP0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=4NUduP8DgEBIOvKEckzqbWWfUhM</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-etools/src/org/carrot2/source/etools/EToolsDocumentSource.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;ClassResource; import org.carrot2.util.resource.IResource; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * A Carrot2 input component for the eTools service (http&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCP0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=E62SoIsGXAAfvMPZAyRlvIjMTvs</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>EToolsDocumentSourceTest.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=O3wxmzvqArcJJFCj691vn8uxqxA</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-etools/src-test/org/carrot2/source/etools/EToolsDocumentSourceTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;fest.assertions.MapAssert; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Sets; /** * Test cases for {@link EToolsDocumentSource}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=5Miy7fU5HVWHBVLluzVilZ1hJec</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>MarketOption.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPEcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=b8cM-tKgEzp9APlcPQKVdKKvFGc</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-microsoft/src/org/carrot2/source/microsoft/MarketOption.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import java.util.Map; import org.carrot2.core.LanguageCode; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Language and country/region information for {@link&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPEcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=NkMq7yqx-FRAP29_ysTl1ZygpzU</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>BingDocumentSource.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCOkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=FFHJvy7JXpi6VpFJdS-nQK_bAec</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-microsoft/src/org/carrot2/source/microsoft/BingDocumentSource.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.slf4j.Logger; import org.slf4j.LoggerFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * A {@link IDocumentSource} fetching {@link Document}s (search&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCOkcDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=SQpIP6GKM43PPL84IJdy5vewu0M</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>BisectingKMeansClusteringAlgorithm.java</title>
++  <time>129483216210000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCM0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=AzmzZOLt4oJktvoxYXtYKDlbvOE</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-kmeans/src/org/carrot2/clustering/kmeans/BisectingKMeansClusteringAlgorithm.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;IntCursor; import com.carrotsearch.hppc.cursors.IntIntCursor; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * A very simple implementation of bisecting k-means&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCM0cDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=syIFvfZPFrZxx6oEjReTvRec0io</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>BisectingKMeansClusteringAlgorithmTest.java</title>
++  <time>129483216130000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNkYDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=XGYtpXMCt-qTEuYDtFJo5tkrTxc</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-kmeans/src-test/org/carrot2/clustering/kmeans/BisectingKMeansClusteringAlgorithmTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;test.ClusteringAlgorithmTestBase; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; public class BisectingKMeansClusteringAlgorithmTest extends&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCNkYDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=fGOq1_3YR3l-X_-FsW-2oKg5Ex0</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>DefaultStemmerFactory.java</title>
++  <time>129483216100000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC70UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=9iBhu0jasa1PHpNSY08cHK_120s</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/linguistic/DefaultStemmerFactory.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;LoggerFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; import &lt;b&gt;…&lt;/b&gt; Predicate; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; @Bindable&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC70UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=mUKWAsnZ2_Cuu6Su0BIx2HATA-Y</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>DefaultLexicalDataFactory.java</title>
++  <time>129483216100000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC7kUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=99T3GFIupL5-zZ1LBWGqG9cnXx0</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/linguistic/DefaultLexicalDataFactory.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;hppc.ObjectOpenHashSet; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function &lt;b&gt;…&lt;/b&gt; base.Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC7kUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=bthVpj7xz1W3-2gzE2s4r67ODno</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>DefaultTokenizerFactory.java</title>
++  <time>129483216100000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC7UUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=mAmdOxuEBMNZQzOllwa_qsI6cAc</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/linguistic/DefaultTokenizerFactory.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;LoggerFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; import &lt;b&gt;…&lt;/b&gt; Predicate; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; @Bindable&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC7UUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=n_E5uM5lHrPxNTiUVCfvAlb4oQ4</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>PhraseExtractor.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCjEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=baXf1BOW1OrgcTlyTLxg8vLx8-0</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/PhraseExtractor.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;hppc.IntIntOpenHashMap; import com.carrotsearch.hppc.cursors.IntIntCursor; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Extracts frequent phrases from the&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCjEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=p9qW5Ihir_mAc7snElL0F0RSPjM</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>CaseNormalizer.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCi0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=-k-h-psQv3KzgPBkEkmMsUYN7Cc</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/CaseNormalizer.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;ShortArrayList; import com.carrotsearch.hppc.sorting.IndirectSort; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Performs case normalization and calculates a&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCi0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=0XnIaZuC-hLs60_TAT9_2Pq2A5w</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>Tokenizer.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCikUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=LlcM9c7fwMA10YG5ejceWHiYN2k</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/Tokenizer.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;hppc.IntArrayList; import com.carrotsearch.hppc.ShortArrayList; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Performs tokenization of documents. * &amp;lt;p&amp;gt; * This&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCikUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=KIyj3HsNnic86JwLKrLjrMvEq0w</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>DocumentAssigner.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCiUUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=e9Z0XZJX87IsspfcNXdAAKwTUsQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/DocumentAssigner.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;carrotsearch.hppc.BitSet; import com.carrotsearch.hppc.IntArrayList; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Assigns document to label candidates. For&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCiUUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=JyqvzZRJCuvHv_cYjQ95RhrlB94</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>LanguageModelStemmer.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWChEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Aze-FhYSl4yaGIqsdhDZCFYgBm8</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/LanguageModelStemmer.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;IndirectSort; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Sets; /** * Applies&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWChEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=3aV_h95AWbviEljkK4ZlAx4anyc</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>RightCompleteLabelFilter.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCf0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=diMWSYQWfbmMbB9qs2kHmPLY-RE</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/filter/RightCompleteLabelFilter.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.carrot2.text.preprocessing.filter; import java.util.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Filters out phrases that are not left complete&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCf0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=DZBUFq79raowLlFcwt4od4t61n8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>LeftCompleteLabelFilter.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCe0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=13zWp6oeZSS6Cs1b7hs_hw2v6wk</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/filter/LeftCompleteLabelFilter.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.carrot2.text.preprocessing.filter; import java.util.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Filters out phrases that are not left complete&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCe0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=Da3NszolS_jpxuhrrOKDDsRJLXo</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>CompleteLabelFilterBase.java</title>
++  <time>129483216050000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCekUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=OpgJ-gbtraEmbW5is7q-882zG-k</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/preprocessing/filter/CompleteLabelFilterBase.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.List; import org.carrot2.text.preprocessing.PreprocessingContext; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Base class for complete phrase filtering&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCekUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=noKvwxy8VqlI7XAFiO18wGZRB5I</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>MultilingualClustering.java</title>
++  <time>129483216040000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCcUUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=bDrGBiKSvHt3VTFOYiBOZhU9hAg</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src/org/carrot2/text/clustering/MultilingualClustering.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;LoggerFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import &lt;b&gt;…&lt;/b&gt; base.Function; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; import&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCcUUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=hRB0lewUcrO3Oy3IOXUm0B-S3yE</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ExtendedWhitespaceTokenizerTest.java</title>
++  <time>129483216040000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCaEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=ACR8xbfT_m_yhfHI3BXUpCAc_48</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src-test/org/carrot2/text/linguistic/ExtendedWhitespaceTokenizerTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;test = &quot; urls http://www.&lt;B&gt;google&lt;/B&gt;.com http://www.cs.put.poznan.pl &lt;b&gt;…&lt;/b&gt; + &quot; ftp://ftp.server.pl www.&lt;B&gt;google&lt;/B&gt;.com not.an.url go2.pl/mail&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCaEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=qeugOWsSzNplgoqBpkRE1FjM7AE</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>DefaultLexicalDataFactoryTest.java</title>
++  <time>129483216040000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCZ0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=wSUm-TBEKfuZEEtMSHiZYwinSP8</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src-test/org/carrot2/text/linguistic/DefaultLexicalDataFactoryTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.resource.ResourceLookup.Location; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableMap; /** * Tests {@link ILexicalData}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCZ0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=sN5ZgIeqaS3AmmrMrA_cwlHbKEg</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>SubstringComparatorTest.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCJ0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Hsqkt9feDYYcK8Sf8yyh7NC9vzM</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src-test/org/carrot2/text/preprocessing/SubstringComparatorTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import org.junit.Assert; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for {@link SubstringComparator}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCJ0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=_246mNSCMqWTEqc8P6s0Bk65aDs</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>PreprocessedDocumentScannerTest.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCJEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=mhwuBYEBxz_ZbV7onQtNUbLKgF8</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src-test/org/carrot2/text/preprocessing/PreprocessedDocumentScannerTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;java.util.List; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for {@link PreprocessedDocumentScannerTest}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCJEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=Xy9MCtByMvBHHJfrXeghN9I6R0Q</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>PreprocessingComponentTestBase.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCHkUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=t0HNNChg5qSn4x61-1OHm1tzI4w</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src-test/org/carrot2/text/preprocessing/PreprocessingComponentTestBase.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Before; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Base class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCHkUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=jalnBeMHVG9gM36F7bKTc80tKLA</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>MultilingualClusteringTest.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCFEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=wsg0hjb3oez1ki0gqNfWiA81cds</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-text/src-test/org/carrot2/text/clustering/MultilingualClusteringTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import com &lt;b&gt;…&lt;/b&gt; base.Function; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; import&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCFEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=LPNJgnYI9JlLJI7iq99Q2AZu7AI</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>XmlDocumentSource.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCD0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=RweGgpeAj58MI8kFWeMt4q2OBw4</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-xml/src/org/carrot2/source/xml/XmlDocumentSource.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;attribute.constraint.IntRange; import org.carrot2.util.resource.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * Fetches documents from XML files and streams. For&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCD0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=XRgbeJ0x7k267fPxxMfxm2qKR2o</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>XmlDocumentSourceTest.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCDkUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=fbtl0ykBvgSoWbGxN8NVBxOgSTg</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-xml/src-test/org/carrot2/source/xml/XmlDocumentSourceTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Test cases&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCDkUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=_rlH0VPxbm8JC_dmc7Db8SqWjiA</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ByFieldClusteringAlgorithm.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCDEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=IZwlzLhtzxe3a4G0mhw46Li2iBY</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-synthetic/src/org/carrot2/clustering/synthetic/ByFieldClusteringAlgorithm.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;NotBlank; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Clusters&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCDEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=jnAcSa0oIjeTRg1zx-_jTF9voEY</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ByUrlClusteringAlgorithm.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCC0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=gWz1FREdaJ5cy8ZgUV8XANXUhqQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-synthetic/src/org/carrot2/clustering/synthetic/ByUrlClusteringAlgorithm.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;attribute.*; import org.carrot2.util.attribute.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * Hierarchically clusters documents according to their content URLs&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCC0UDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=TuxjYnR-xUQVkmxv9K4tEZiNBy8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ByFieldClusteringAlgorithmTest.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCCUUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=MapLhf1MvntH3swCk5UPdwY2Duc</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-synthetic/src-test/org/carrot2/clustering/synthetic/ByFieldClusteringAlgorithmTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.attribute.AttributeUtils; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for the {@link ByFieldClusteringAlgorithm&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCCUUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=5ubYq_sILHqRq1E2QEQqu1q3aKg</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ByUrlClusteringAlgorithmTest.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCCEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=K4lZmU7X1YHP0IUQthiS5LhmUU4</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-synthetic/src-test/org/carrot2/clustering/synthetic/ByUrlClusteringAlgorithmTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;core.test.ClusteringAlgorithmTestBase; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for the {@link ByUrlClusteringAlgorithm&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCCEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=USDZ484XctZfL17IFjRzwYgYT7o</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>LingoClusteringAlgorithm.java</title>
++  <time>129483215930000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCAEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Z4vSQO1pF8ZyU4TMa2rnlrTcbG0</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-lingo/src/org/carrot2/clustering/lingo/LingoClusteringAlgorithm.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;hppc.BitSet; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Ordering; /** * Lingo&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCAEUDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=HBnYo88QTB42qA1wpzVTo7xqSL4</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>LingoClusteringAlgorithmTest.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC-0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=_FULBQw3NQq7hYJxZr1PJtj-UKg</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-algorithm-lingo/src-test/org/carrot2/clustering/lingo/LingoClusteringAlgorithmTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableList; import &lt;b&gt;…&lt;/b&gt; collect.ImmutableList; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC-0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=tuhvvFYlE_yKBYqv6yTBOBK_IE8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ProcessingComponentDescriptor.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC6UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=qanAzEUNb6SkCI82PqSKfdpa2_s</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/ProcessingComponentDescriptor.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;core.Commit; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import com &lt;b&gt;…&lt;/b&gt; common.base.Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC6UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=nLowGk6QPInOTJDHtFEwFRkt3gY</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ProcessingComponentConfiguration.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC5kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=pRf2XTxN69BTRQ1hlfa9hmkzVWQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/ProcessingComponentConfiguration.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableMap; import &lt;b&gt;…&lt;/b&gt; collect.ImmutableMap; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC5kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=1ZRg1ofYYa8nxtdeVWOybxKaJdY</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>Controller.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC5UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=AqhVRv6GMPPG6IkzrvMychBFmmY</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/Controller.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;xml.Attribute; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableMap &lt;b&gt;…&lt;/b&gt; ImmutableMap; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * A&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC5UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=XB37Ku7KnrD26DzyKFuD2-0tZLM</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>PoolingProcessingComponentManager.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC5EQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=IBbMdTPBV9huCi-Xs30OLZmaChU</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/PoolingProcessingComponentManager.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;LoggerFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; import &lt;b&gt;…&lt;/b&gt; base.Predicate; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableMap&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC5EQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=7gn3RObb6D9p7-HsOvROga-mIwE</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>Cluster.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC4kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=UxHlebdm1wONrMySnytyM8u_lL0</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/Cluster.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;core.Persist; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import &lt;b&gt;…&lt;/b&gt; Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * A cluster&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC4kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=ZNTRQU3V7IliqnYwaUIQgBDbaOE</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>LanguageCode.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC4EQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Bf6wkpqCfDtGgYXJlyMR7G7UffQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/LanguageCode.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import java.util.Map; import org.carrot2.util.StringUtils; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Codes for languages for which linguistic resources are&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC4EQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=HZmU4wGy_I9NbTnw9zD7Yi26v44</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>Document.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC30QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=dSodRf3Lp3crEAIoy8iK5pNTWPo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/Document.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;core.Persist; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import &lt;b&gt;…&lt;/b&gt; Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * A document&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC30QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=u5X-SmVtzQ8oabygyfDoNZ2ENAc</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ProcessingResult.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC3UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Mxx_-w4F4gLg3xUt4o466xsWmMY</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/ProcessingResult.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;xml.*; import org.simpleframework.xml.core.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * Encapsulates the results of processing. Provides access to the values&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC3UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=OEYW9eZ1ppma2gfPa3AQDgtwFTI</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ProcessingComponentSuite.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC20QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=x9wjqQhTRR_3kzoARlJZeRHxlk0</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/ProcessingComponentSuite.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import static com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists.newArrayList &lt;b&gt;…&lt;/b&gt; TreeStrategy; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Iterables&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC20QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=Uj-ZKv35UjmyNo6LrI15JW7nxdI</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>CachingProcessingComponentManager.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC2kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=NauzVOmUzdTZcJGfH5LTKmJAh2M</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/CachingProcessingComponentManager.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import org.carrot2.util.resource.ClassResource; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * An {@link IProcessingComponentManager} that implements processing&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC2kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=2bgfcgsNGz3KQ_V1uTiAvfu_7UM</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ControllerUtils.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC2UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=TKeFXPM1XVhyn1hdcy1PRY9svjg</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/ControllerUtils.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;attribute.*; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicates; import &lt;b&gt;…&lt;/b&gt; Predicates; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Static&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC2UQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=gaAtSYfmYXTajCGRtCDCecsn5lk</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ClusterWithParent.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC0kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=fNZjjgTInRblu9wxEYbQe8jAztQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/ClusterWithParent.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import java.util.Collections; import java.util.List; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Wraps a {@link Cluster} to add information about the&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWC0kQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=38U1uB7n22HMT4chPGaqYSYcKr4</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ControllerContextImpl.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCz0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=K_AIlnOIyfz66CIarCcJnQLFr0U</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/ControllerContextImpl.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.HashMap; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Package&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCz0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=KUQ-n1Wyy0W618mwNwEVlhrTg9Y</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>InternalAttributePredicate.java</title>
++  <time>129483215920000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCxUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=LrlAtoe1Tsp5k0yHaHcb5RTHYDU</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/core/attribute/InternalAttributePredicate.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;core.attribute; import org.carrot2.util.attribute.AttributeDescriptor; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; /** * A predicate that tests whether an {@link&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCxUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=RRa96F3W7vouNyTfDjS1jPUggK4</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>UniqueFieldPredicate.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCvkQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=VuYCB06Mo_zgTnk5dmYyt0nO6vg</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/source/UniqueFieldPredicate.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;java.util.HashSet; import org.carrot2.core.Document; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; /** * This predicate allows one to filter out documents with non&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCvkQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=_wFXq0bC0l-DoXBrFMRonuwCWGk</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>MultipageSearchEngine.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCuEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=ufHeiyDX8Gcl6TuVUqx1cRUCFnw</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src/org/carrot2/source/MultipageSearchEngine.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;attribute.Processing; import org.carrot2.util.attribute.*; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; /** * A base class facilitating implementation of {@link&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCuEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=YVhH1rTyk0_jrjDWZhQ2PbM_wR8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>DocumentTest.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCt0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=YyX4NqdXeMgKhWL5Y8DWPLYru-A</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/DocumentTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;fest.assertions.Assertions.assertThat; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for {@link Document}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCt0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=0wePOO8qktigg9IK962bbuhe9-w</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ProcessingResultTest.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCtUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=8TtDrhZtI43-4SskveYT5HdbksM</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/ProcessingResultTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import com &lt;b&gt;…&lt;/b&gt; Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Test cases&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCtUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=hr8z7kB0mO2zZstpvJUVzeldYI8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ClusterWithParentTest.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCtEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=-PtjWTAlS4iceBCkWEvjuNaxWL4</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/ClusterWithParentTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import com &lt;b&gt;…&lt;/b&gt; Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCtEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=x2LHKcyP4tuN7hRciVzb642IovU</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ControllerTestsCaching.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCsUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=wgmsrwyI4Mz8kMzJ1RThRNoummE</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/ControllerTestsCaching.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import org.carrot2.util.attribute.*; import org.junit.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Tests caching functionality of a {@link Controller&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCsUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=FXQEXdoANDBc4HaJrzn1YXBhBFU</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ControllerTest.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCsEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=davPZmGFILDf2XZ9GgNJ4QANXzo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/ControllerTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.junit.runner.RunWith; import org.junit.runners.Suite; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableMap; /** * Runs matrix tests on {@link Controller} in all&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCsEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=mSYUEeighYgF4d4vHeNWZzD2PBM</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ControllerTestsBase.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCr0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=8V8pLV0aK3ssMsWaXCCeZHGWo5s</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/ControllerTestsBase.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import org.easymock.IMocksControl; import org.junit.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Base class for {@link Controller} tests. */ public&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCr0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=Gh8gU21GUF_0g5njQ0l0NEOKbWM</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ClusterTest.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCrkQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=0qtK3BSIUOyjQKCe8Wn4ICnN_JY</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/ClusterTest.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import org.fest.assertions.Assertions; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; /** * Test cases for {@link Cluster}. */ public class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCrkQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=HD1k09-rvHhlK2pzB3E1l0osR_4</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ControllerTestsCommon.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCrUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=Y-l-CHvsiPOdzsAYubW1JzpZIZM</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/ControllerTestsCommon.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;org.carrot2.util.attribute.Output; import org.junit.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.*; /** * Tests common functionality of a {@link Controller}. The fact&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCrUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=c5xaSOt-aEB4I4hECqugzqgsMp0</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>SampleDocumentData.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCqkQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=eFVuF_b28ueOanw2_0tzZe9QbjU</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/test/SampleDocumentData.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;LanguageCode; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableList &lt;b&gt;…&lt;/b&gt; Get Firefox. Get &lt;B&gt;Google&lt;/B&gt; Ads. Affiliates ... By Dawid | February&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCqkQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=spWMKIAHUkLx0QjIN0a9DmKVbmg</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>DocumentSourceTestBase.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCqEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=qRY67EGGN2S0LDL_hmYK0V53PGo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/test/DocumentSourceTestBase.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Assert; import org.junit.Assume; import org.junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; /** * Simple baseline tests that apply to a generic data&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCqEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=EJOnzJ5SxUBSMcWYymoGuk7j2qA</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>QueryableDocumentSourceTestBase.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCo0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=vhptyUWAmYoFhskJy16wQyuMwgQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/test/QueryableDocumentSourceTestBase.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Function; import com &lt;b&gt;…&lt;/b&gt; base.Function; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCo0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=-MqRdHmk3NavTOkXISN3qbqGUb8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>ClusteringAlgorithmTestBase.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCoEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=9gs0k7Cll7F3kFdXfPBqzUGCTTQ</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/test/ClusteringAlgorithmTestBase.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;junit.Test; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ArrayListMultimap &lt;b&gt;…&lt;/b&gt; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableMap; import com&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCoEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=SRYfXDOEddr7QWvyUi_X8yEw66c</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>GenericListAssertion.java</title>
++  <time>129483215890000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCmUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=GMTDQUFhtx5fCtNYhq3njRzeKWs</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-core/src-test/org/carrot2/core/test/assertions/GenericListAssertion.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;ItemGroupAssert; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Lists; import &lt;b&gt;…&lt;/b&gt; collect.Lists; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Sets; /** * A&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCmUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=fzyUJ8pqE_EP6gBjNvQM2cIjtp8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>OpenSearchDocumentSource.java</title>
++  <time>129483215860000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCikQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=W6HjX7G-O0-ChhoUp2SUZe2IUwk</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-opensearch/src/org/carrot2/source/opensearch/OpenSearchDocumentSource.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.resource.URLResourceWithParams; import org.slf4j.Logger; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; import com.sun.syndication.feed.synd.SyndEntry; import&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCikQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=OMwO2_EEYn7zHXBJtaFGyipN_lA</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>GoogleDesktopDocumentSource.java</title>
++  <time>129483215860000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWChUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=VC5vpymNpA3DvQFlFCzvUPyCbeo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-source-google-desktop/src/org/carrot2/source/google/GoogleDesktopDocumentSource.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;package org.carrot2.source.&lt;B&gt;google&lt;/B&gt;; import java.io.*; import org &lt;b&gt;…&lt;/b&gt; from an instance of &lt;B&gt;Google&lt;/B&gt; Desktop search engine. */ @Bindable&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWChUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=STNAOxGo_u5Sf149SgVFbVDN7u8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>IterationNumberGuesser.java</title>
++  <time>129483215860000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCcEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=bedQkGl5JDpDCURka_A3rZJfDwU</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-matrix/src/org/carrot2/matrix/factorization/IterationNumberGuesser.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;matrix.factorization.seeding.RandomSeedingStrategyFactory; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; import org.apache.mahout.math.matrix.*; /** * This class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCcEQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=jKS9cPq8mNzFyxiEGFa7kYZI86I</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>SimpleXmlWrappers.java</title>
++  <time>129483215850000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCREQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=RIbDXofgAipH62fzlOjW1IMedZI</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-attribute/src/org/carrot2/util/simplexml/SimpleXmlWrappers.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import java.util.*; import org.simpleframework.xml.Root; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Enables SimpleXML-based serialization of collections of&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCREQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=tlWgWvrA-ygcOwp2Ga6AKlNHCsg</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>SessionInitStrategy.java</title>
++  <time>129483215850000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCQ0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=cQmSFAMPKnIwhkMUNkYo9hLFrM0</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-attribute/src/org/carrot2/util/simplexml/SessionInitStrategy.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;NodeMap; import org.simpleframework.xml.stream.OutputNode; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * Proxy for initializing session values. */ final class&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCQ0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=zPOSh2-9Mpq2Ie2BwvY3Cquiu2I</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>SimpleXmlWrapperValue.java</title>
++  <time>129483215850000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCQUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=_u-9ll4RSltgus5WEK2PLMtxqHo</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-attribute/src/org/carrot2/util/simplexml/SimpleXmlWrapperValue.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;util.ReflectionUtils; import org.simpleframework.xml.*; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableSet; /** * A wrapper around typical serialized types, such&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCQUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=DNopRBEnZiNiH1zonFEnpkYD5sE</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>PersisterHelpers.java</title>
++  <time>129483215850000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=LStuif25ddokhc-xbKwQtKClS5I</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-attribute/src/org/carrot2/util/simplexml/PersisterHelpers.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import org.simpleframework.xml.strategy.Strategy; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.ImmutableMap; /** * Simple XML session context helpers. */ public final&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCPUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=KecU7LAgKrXL6r7ZGAcYMdqsok0</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>AttributeBinder.java</title>
++  <time>129483215850000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCO0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=13BQ7DjRG6sk2oiFuoK2eLdzK00</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-attribute/src/org/carrot2/util/attribute/AttributeBinder.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;IResource; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate; import com &lt;b&gt;…&lt;/b&gt; Predicate; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicates; import com&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCO0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=PvLIlKzwkr-EXPa-tUCTCubIcnQ</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>AttributeBinderInjector.java</title>
++  <time>129483215850000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCOUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=7JUyyElvl2lNvO2oTIY3Ny8usrM</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-attribute/src/org/carrot2/util/attribute/AttributeBinderInjector.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;IAttributeBinderAction; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicate &lt;b&gt;…&lt;/b&gt; Predicate; import com.&lt;B&gt;google&lt;/B&gt;.common.base.Predicates; /** * A&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCOUQDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=hHGtO3u-CqnoSX8vM-shd2v5wQ8</cache_url>
++</result>
++<result>
++  <category>file</category>
++  <title>BindableUtils.java</title>
++  <time>129483215850000000</time>
++  <icon>/icon?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCN0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;canScale=1&amp;s=M1XHpQ7HpEsTP7OjybZhKcZPn1s</icon>
++  <url>~/carrot2/carrot2.sf.trunk/core/carrot2-util-attribute/src/org/carrot2/util/attribute/BindableUtils.java</url>
++  <snippet>&lt;b&gt;…&lt;/b&gt;import java.util.LinkedHashSet; import org.carrot2.util.Pair; import com.&lt;B&gt;google&lt;/B&gt;.common.collect.Maps; /** * A set of utility methods for working with {@link&lt;b&gt;…&lt;/b&gt;</snippet>
++  <cache_url>/versions?id=BAtzdHJlYW10eXBlZIHoA4QBQISEhAxOU0RpY3Rpb25hcnkAhIQITlNPYmplY3QAhYQBaQOShISECE5TU3RyaW5nAZSEASsFZXZlbnSGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVlAJSEASqElZWCN0QDAIaShJaXBnRyaWRleIaShJmahIQOe0dVSUQ9SVNTWzhDXX2bgidTmy6Bk76BMMeTt4hmG_ZkNIaShJaXBnNjaGVtYYaShJiampUDhoY&amp;q=google&amp;s=DyxUPeIRm4w6bYIILmNKWfRgewg</cache_url>
++</result>
++</results>
+diff --git a/core/carrot2-util-log4j/src/log4j.xml b/core/carrot2-util-log4j/src/log4j.xml
+index 7c707e8..3e5ba12 100644
+--- a/core/carrot2-util-log4j/src/log4j.xml
++++ b/core/carrot2-util-log4j/src/log4j.xml
+@@ -16,8 +16,6 @@
+     &appender-console;
+ 
+     <!-- Add logger filters here. -->
+-    &filters-common;
+-    &filters-framework;
+ 
+     <!-- Root logger config. -->
+     <root>

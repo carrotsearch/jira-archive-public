@@ -1,0 +1,1616 @@
+Index: workbench/org.carrot2.workbench.core.feature/feature.xml
+===================================================================
+--- workbench/org.carrot2.workbench.core.feature/feature.xml	(wersja 3829)
++++ workbench/org.carrot2.workbench.core.feature/feature.xml	(kopia robocza)
+@@ -36,13 +36,6 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="com.thoughtworks.qdox"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+          id="net.sf.ehcache"
+          download-size="0"
+          install-size="0"
+@@ -114,12 +107,6 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.apache.ant"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"/>
+-
+-   <plugin
+          id="org.carrot2.workbench.editors"
+          download-size="0"
+          install-size="0"
+@@ -163,15 +150,6 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.ui.win32"
+-         os="win32"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         fragment="true"
+-         unpack="false"/>
+-
+-   <plugin
+          id="org.eclipse.ui.views"
+          download-size="0"
+          install-size="0"
+@@ -238,20 +216,6 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.ui.ide"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.core.net"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+          id="org.eclipse.text"
+          download-size="0"
+          install-size="0"
+@@ -343,48 +307,6 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.carrot2.workbench.vis.circles"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.equinox.http.jetty"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.equinox.http.registry"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.equinox.http.servlet"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.mortbay.jetty.server"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.mortbay.jetty.util"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+          id="org.codehaus.jackson"
+          download-size="0"
+          install-size="0"
+@@ -443,27 +365,6 @@
+          fragment="true"/>
+ 
+    <plugin
+-         id="org.eclipse.ui.workbench"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.ui.editors"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.ui.workbench.texteditor"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+          id="org.eclipse.core.filebuffers"
+          download-size="0"
+          install-size="0"
+@@ -471,101 +372,59 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.equinox.security"
++         id="org.slf4j"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.compare.core"
++         id="org.eclipse.ui"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.equinox.p2.core"
++         id="org.carrot2.workbench.vis.circles"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.equinox.p2.engine"
++         id="org.eclipse.equinox.http.jetty"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.equinox.p2.metadata"
++         id="org.eclipse.equinox.http.registry"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.equinox.p2.repository"
++         id="org.eclipse.equinox.http.servlet"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.equinox.p2.metadata.generator"
++         id="org.mortbay.jetty.server"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.equinox.p2.metadata.repository"
++         id="org.mortbay.jetty.util"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+ 
+-   <plugin
+-         id="org.eclipse.ecf"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.ecf.filetransfer"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.ecf.identity"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.equinox.p2.artifact.repository"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.equinox.p2.jarprocessor"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.slf4j"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+ </feature>
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/preferences/GeneralPreferencesPage.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/preferences/GeneralPreferencesPage.java	(wersja 0)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/preferences/GeneralPreferencesPage.java	(wersja 0)
+@@ -0,0 +1,49 @@
++/*
++ * Carrot2 project.
++ *
++ * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
++ * All rights reserved.
++ *
++ * Refer to the full license file "carrot2.LICENSE"
++ * in the root folder of the repository checkout or at:
++ * http://www.carrot2.org/carrot2.LICENSE
++ */
++
++package org.carrot2.workbench.core.preferences;
++
++import org.carrot2.workbench.core.WorkbenchCorePlugin;
++import org.eclipse.jface.preference.IPreferenceStore;
++import org.eclipse.jface.preference.PreferencePage;
++import org.eclipse.swt.SWT;
++import org.eclipse.swt.widgets.Composite;
++import org.eclipse.swt.widgets.Control;
++import org.eclipse.ui.IWorkbench;
++import org.eclipse.ui.IWorkbenchPreferencePage;
++
++/**
++ * General preferences (category).
++ */
++public class GeneralPreferencesPage extends PreferencePage implements
++    IWorkbenchPreferencePage
++{
++    protected Control createContents(Composite parent)
++    {
++        return new Composite(parent, SWT.NULL);
++    }
++
++    /**
++     * Hook method to get a page specific preference store. Reimplement this method if a
++     * page don't want to use its parent's preference store.
++     */
++    protected IPreferenceStore doGetPreferenceStore()
++    {
++        return WorkbenchCorePlugin.getDefault().getPreferenceStore();
++    }
++
++    /**
++     * @see IWorkbenchPreferencePage
++     */
++    public void init(IWorkbench workbench)
++    {
++    }
++}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/helpers/StringEditorInput.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/helpers/StringEditorInput.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/helpers/StringEditorInput.java	(kopia robocza)
+@@ -1,117 +0,0 @@
+-
+-/*
+- * Carrot2 project.
+- *
+- * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
+- * All rights reserved.
+- *
+- * Refer to the full license file "carrot2.LICENSE"
+- * in the root folder of the repository checkout or at:
+- * http://www.carrot2.org/carrot2.LICENSE
+- */
+-
+-package org.carrot2.workbench.core.helpers;
+-
+-import java.io.*;
+-import java.net.URI;
+-
+-import org.eclipse.core.resources.IEncodedStorage;
+-import org.eclipse.core.resources.IStorage;
+-import org.eclipse.core.runtime.CoreException;
+-import org.eclipse.core.runtime.IPath;
+-import org.eclipse.jface.resource.ImageDescriptor;
+-import org.eclipse.ui.*;
+-
+-/**
+- * An input implementation for Eclipse's default text editor that reads from
+- * an in-memory string and allows specifying encoding information.
+- */
+-@SuppressWarnings("unchecked")
+-public final class StringEditorInput 
+-    implements IStorageEditorInput, IURIEditorInput
+-{
+-    private final String inputString;
+-
+-    public StringEditorInput(String inputString)
+-    {
+-        this.inputString = inputString;
+-    }
+-
+-    public boolean exists()
+-    {
+-        return false;
+-    }
+-
+-    public ImageDescriptor getImageDescriptor()
+-    {
+-        return null;
+-    }
+-
+-    public IPersistableElement getPersistable()
+-    {
+-        return null;
+-    }
+-
+-    public Object getAdapter(Class adapter)
+-    {
+-        return null;
+-    }
+-
+-    public String getName()
+-    {
+-        return "untitled";
+-    }
+-
+-    public String getToolTipText()
+-    {
+-        return "";
+-    }
+-
+-    public URI getURI()
+-    {
+-        return new File("unnamed.txt").toURI();
+-    }
+-
+-    public IStorage getStorage() throws CoreException
+-    {
+-        return new IEncodedStorage()
+-        {
+-            public InputStream getContents() throws CoreException
+-            {
+-                try
+-                {
+-                    return new ByteArrayInputStream(inputString.getBytes("UTF-8"));
+-                }
+-                catch (UnsupportedEncodingException e)
+-                {
+-                    throw new RuntimeException(e);
+-                }
+-            }
+-
+-            public IPath getFullPath()
+-            {
+-                return null;
+-            }
+-
+-            public String getName()
+-            {
+-                return StringEditorInput.this.getName();
+-            }
+-
+-            public boolean isReadOnly()
+-            {
+-                return true;
+-            }
+-
+-            public Object getAdapter(Class adapter)
+-            {
+-                return null;
+-            }
+-
+-            public String getCharset() throws CoreException
+-            {
+-                return "UTF-8";
+-            }
+-        };
+-    }
+-}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/WorkbenchCorePlugin.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/WorkbenchCorePlugin.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/WorkbenchCorePlugin.java	(kopia robocza)
+@@ -21,7 +21,6 @@
+ import org.carrot2.util.attribute.BindableDescriptor;
+ import org.carrot2.util.resource.*;
+ import org.carrot2.workbench.core.helpers.Utils;
+-import org.carrot2.workbench.core.ui.adapters.PropertySourceAdapterFactory;
+ import org.eclipse.core.runtime.*;
+ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+ import org.eclipse.core.runtime.preferences.InstanceScope;
+@@ -99,11 +98,6 @@
+ 
+         controller = new CachingController(IDocumentSource.class);
+         controller.init(new HashMap<String, Object>(), componentSuite);
+-
+-        /*
+-         * Register adapters.
+-         */
+-        PropertySourceAdapterFactory.register(Platform.getAdapterManager());
+     }
+ 
+     /*
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/MapPropertySource.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/MapPropertySource.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/MapPropertySource.java	(kopia robocza)
+@@ -1,324 +0,0 @@
+-
+-/*
+- * Carrot2 project.
+- *
+- * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
+- * All rights reserved.
+- *
+- * Refer to the full license file "carrot2.LICENSE"
+- * in the root folder of the repository checkout or at:
+- * http://www.carrot2.org/carrot2.LICENSE
+- */
+-
+-package org.carrot2.workbench.core.ui.adapters;
+-
+-import java.util.*;
+-
+-import org.eclipse.core.runtime.IAdapterManager;
+-import org.eclipse.core.runtime.Platform;
+-import org.eclipse.ui.views.properties.*;
+-
+-import com.google.common.collect.Lists;
+-import com.google.common.collect.Maps;
+-
+-/**
+- * A {@link IPropertySource2} that displays properties from a {@link Map}.
+- */
+-@SuppressWarnings("unchecked")
+-public class MapPropertySource implements IPropertySource2
+-{
+-    /**
+-     * Max length of preview if possible to render.
+-     */
+-    private final static int MAX_LENGTH = 120;
+-
+-    /*
+-     * 
+-     */
+-    private final LinkedHashMap<Object, Object> properties = Maps.newLinkedHashMap();
+-
+-    /*
+-     * 
+-     */
+-    private final List<IPropertyDescriptor> descriptors = Lists.newArrayList();
+-
+-    /**
+-     * {@link #toString()} cache if {@link #label} is not available. 
+-     */
+-    private String cache;
+-
+-    /**
+-     * Fixed label returned from {@link #toString()} or <code>null</code>.
+-     */
+-    private String label;
+-
+-    /*
+-     * 
+-     */
+-    public MapPropertySource()
+-    {
+-    }
+-
+-    /**
+-     * Creates a property source for a given set of keys and values. 
+-     */
+-    public MapPropertySource(Map properties)
+-    {
+-        this(properties, null);
+-    }
+-
+-    /**
+-     * Creates a wrapper map for a given collection of elements.  
+-     */
+-    public MapPropertySource(Collection value)
+-    {
+-        this(asMap(value, 0), getLabel(value.size()));
+-    }
+-
+-    /**
+-     *  
+-     */
+-    protected MapPropertySource(Map properties, String label)
+-    {
+-        this.label = label;
+-        add(properties, null);
+-    }
+-
+-    /**
+-     * Add new properties to this map. Property keys must not overlap.
+-     * 
+-     * @param categoryName Optional class name, can be <code>null</code>.
+-     */
+-    public void add(Map newProperties, String categoryName)
+-    {
+-        final LinkedHashMap clonedProperties = new LinkedHashMap(newProperties);
+-
+-        buildDescriptors(clonedProperties, categoryName);
+-        properties.putAll(clonedProperties);
+-
+-        refreshCache();
+-    }
+-
+-    /**
+-     * 
+-     */
+-    private void refreshCache()
+-    {
+-        if (label != null)
+-            return;
+-
+-        // Try to fit all the values if they are small.
+-        final StringBuilder builder = new StringBuilder();
+-        for (Object key : properties.keySet())
+-        {
+-            if (builder.length() > 0) builder.append(", ");
+-
+-            builder.append(key);
+-            builder.append('=');
+-            builder.append(getPropertyValue(key));
+-            
+-            if (builder.length() > MAX_LENGTH)
+-            {
+-                break;
+-            }
+-        }
+-
+-        if (builder.length() > MAX_LENGTH)
+-        {
+-            cache = getLabel(properties.size());
+-        }
+-        else
+-        {
+-            cache = builder.toString();
+-        }
+-    }
+-
+-    /*
+-     * 
+-     */
+-    private static String getLabel(int size)
+-    {
+-        return "[" + size + " element" + (size != 0 ? "s" : "") + "]";
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public boolean isPropertyResettable(Object id)
+-    {
+-        return false;
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public boolean isPropertySet(Object id)
+-    {
+-        return properties.get(id) != null;
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public Object getEditableValue()
+-    {
+-        return this;
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public IPropertyDescriptor [] getPropertyDescriptors()
+-    {
+-        return descriptors.toArray(new IPropertyDescriptor[descriptors.size()]);
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public Object getPropertyValue(Object id)
+-    {
+-        return properties.get(id) == null ? "[null]" : properties.get(id);
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public void resetPropertyValue(Object id)
+-    {
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public void setPropertyValue(Object id, Object value)
+-    {
+-    }
+-
+-    /*
+-     * 
+-     */
+-    private void buildDescriptors(Map<Object, Object> newProperties, String categoryName)
+-    {
+-        final IAdapterManager adapterManager = Platform.getAdapterManager();
+-        for (Map.Entry<Object, Object> e : newProperties.entrySet())
+-        {
+-            final Object key = e.getKey();
+-            final Object value = e.getValue();
+-
+-            /*
+-             * Expand complex properties into sub-elements.
+-             */
+-            if (value != null)
+-            {
+-                if (value instanceof Map)
+-                {
+-                    e.setValue(new MapPropertySource((Map) value));
+-                }
+-                else
+-                if (value instanceof Collection)
+-                {
+-                    e.setValue(new MapPropertySource((Collection) value));
+-                }
+-                else
+-                {
+-                    final IPropertySource adapted = (IPropertySource) 
+-                        adapterManager.getAdapter(value, IPropertySource.class);
+-                    if (adapted != null)
+-                    {
+-                        e.setValue(adapted);
+-                    }
+-                }
+-            }
+-
+-            /*
+-             * Create a property descriptor with a read-only cell editor, so that
+-             * value copying is possible. For mapped property sources, create read-only
+-             * property editor.
+-             */
+-            final PropertyDescriptor descriptor;
+-            if (newProperties.get(key) instanceof MapPropertySource)
+-            {
+-                descriptor = new PropertyDescriptor(key, key.toString());
+-            }
+-            else
+-            {
+-                descriptor = new ReadOnlyTextPropertyDescriptor(key, key.toString());
+-            }
+-
+-            descriptor.setCategory(categoryName);
+-            descriptors.add(descriptor);
+-        }
+-    }
+-
+-    /**
+-     * Convert a collection of elements to a {@link Map}, where keys
+-     * are artificially generated from indices of the elements.
+-     */
+-    private static Map asMap(Collection value, final int startIndex)
+-    {
+-        final int size = value.size();
+-
+-        final LinkedHashMap submap = Maps.newLinkedHashMap();
+-        final int maxDigits = maxDigits(size);
+-        final String format = "%1$0" + maxDigits + "d";
+-
+-        /*
+-         * We want a maximum of MAX_LEVEL_ELEMENTS at each level of the tree.
+-         */
+-        final double MAX_LEVEL_ELEMENTS = 10;
+-
+-        if (size <= MAX_LEVEL_ELEMENTS)
+-        {
+-            int index = startIndex;
+-            for (Object element : (Collection) value)
+-            {
+-                submap.put(String.format(format, index), element);
+-                index++;
+-            }
+-        }
+-        else
+-        {
+-            final int levels = (int) Math.ceil(Math.log(value.size()) / Math.log(MAX_LEVEL_ELEMENTS));
+-            final int increment = (int) Math.pow(MAX_LEVEL_ELEMENTS, levels - 1);
+-
+-            final ArrayList asArray = new ArrayList(value);
+-
+-            for (int from = 0; from < asArray.size(); from += increment)
+-            {
+-                final int to = Math.min(from + increment, asArray.size());
+-
+-                final Map slice = asMap(asArray.subList(from, to), from + startIndex);
+-
+-                submap.put(String.format(format, from + startIndex) 
+-                    + ".." + String.format(format, to + startIndex - 1), slice);
+-            }
+-        }
+-
+-        return submap;
+-    }
+-
+-    /**
+-     * Return the minimum number of decimal digits that can fully
+-     * represent a given number.
+-     */
+-    private static int maxDigits(int number)
+-    {
+-        int digits = 1;
+-        while ((number / 10) != 0)
+-        {
+-            number = number / 10;
+-            digits++;
+-        }
+-        return digits;
+-    }
+-
+-    /*
+-     * 
+-     */
+-    @Override
+-    public String toString()
+-    {
+-        return label != null ? label : cache;
+-    }
+-}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/DocumentPropertySource.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/DocumentPropertySource.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/DocumentPropertySource.java	(kopia robocza)
+@@ -1,38 +0,0 @@
+-
+-/*
+- * Carrot2 project.
+- *
+- * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
+- * All rights reserved.
+- *
+- * Refer to the full license file "carrot2.LICENSE"
+- * in the root folder of the repository checkout or at:
+- * http://www.carrot2.org/carrot2.LICENSE
+- */
+-
+-package org.carrot2.workbench.core.ui.adapters;
+-
+-import java.util.Map;
+-
+-import org.carrot2.core.Document;
+-
+-import com.google.common.collect.Maps;
+-
+-/**
+- * 
+- */
+-public final class DocumentPropertySource extends MapPropertySource
+-{
+-    public DocumentPropertySource(Document document)
+-    {
+-        final Map<String, Object> properties = Maps.newHashMap();
+-        
+-        properties.put("ID", document.getId());
+-        properties.put("URL", document.getField(Document.CONTENT_URL));
+-        properties.put("summary", document.getField(Document.SUMMARY));
+-        properties.put("title", document.getField(Document.TITLE));
+-        properties.put("fields", document.getFields());
+-
+-        add(properties, null);
+-    }
+-}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/ReadOnlyTextPropertyDescriptor.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/ReadOnlyTextPropertyDescriptor.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/ReadOnlyTextPropertyDescriptor.java	(kopia robocza)
+@@ -1,52 +0,0 @@
+-
+-/*
+- * Carrot2 project.
+- *
+- * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
+- * All rights reserved.
+- *
+- * Refer to the full license file "carrot2.LICENSE"
+- * in the root folder of the repository checkout or at:
+- * http://www.carrot2.org/carrot2.LICENSE
+- */
+-
+-package org.carrot2.workbench.core.ui.adapters;
+-
+-import org.eclipse.jface.viewers.CellEditor;
+-import org.eclipse.jface.viewers.TextCellEditor;
+-import org.eclipse.swt.SWT;
+-import org.eclipse.swt.widgets.*;
+-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+-
+-/**
+- * A {@link TextPropertyDescriptor} that displays a read-only text box
+- * with the string value of a given property. No editing is allowed.
+- */
+-public class ReadOnlyTextPropertyDescriptor extends TextPropertyDescriptor
+-{
+-    public ReadOnlyTextPropertyDescriptor(Object id, String displayName)
+-    {
+-        super(id, displayName);
+-    }
+-
+-    public CellEditor createPropertyEditor(Composite parent)
+-    {
+-        TextCellEditor editor = new TextCellEditor(parent) {
+-            @Override
+-            protected void doSetValue(Object value)
+-            {
+-                super.doSetValue(value.toString());
+-            }
+-
+-            @Override
+-            protected Control createControl(Composite parent)
+-            {
+-                Text txt = (Text) super.createControl(parent);
+-                text.setEditable(false);
+-                return txt;
+-            }
+-        };
+-        editor.setStyle(editor.getStyle() | SWT.READ_ONLY);
+-        return editor;
+-    }
+-}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/ClusterPropertySource.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/ClusterPropertySource.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/ClusterPropertySource.java	(kopia robocza)
+@@ -1,47 +0,0 @@
+-
+-/*
+- * Carrot2 project.
+- *
+- * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
+- * All rights reserved.
+- *
+- * Refer to the full license file "carrot2.LICENSE"
+- * in the root folder of the repository checkout or at:
+- * http://www.carrot2.org/carrot2.LICENSE
+- */
+-
+-package org.carrot2.workbench.core.ui.adapters;
+-
+-import java.util.Map;
+-
+-import org.carrot2.core.Cluster;
+-
+-import com.google.common.collect.Maps;
+-
+-public final class ClusterPropertySource extends MapPropertySource
+-{
+-    public ClusterPropertySource(Cluster cluster)
+-    {
+-        final Map<String, Object> properties = Maps.newHashMap();
+-        
+-        properties.put("ID", cluster.getId());
+-        properties.put("label", cluster.getLabel());
+-
+-        if (!cluster.getDocuments().isEmpty())
+-        {
+-            properties.put("documents", cluster.getDocuments());
+-        }
+-
+-        if (!cluster.getSubclusters().isEmpty())
+-        {
+-            properties.put("sub-clusters", cluster.getSubclusters());
+-        }
+-
+-        if (!cluster.getAttributes().isEmpty())
+-        {
+-            properties.put("attributes", cluster.getAttributes());
+-        }
+-
+-        add(properties, null);
+-    }
+-}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/SearchResultPropertySource.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/SearchResultPropertySource.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/SearchResultPropertySource.java	(kopia robocza)
+@@ -1,43 +0,0 @@
+-
+-/*
+- * Carrot2 project.
+- *
+- * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
+- * All rights reserved.
+- *
+- * Refer to the full license file "carrot2.LICENSE"
+- * in the root folder of the repository checkout or at:
+- * http://www.carrot2.org/carrot2.LICENSE
+- */
+-
+-package org.carrot2.workbench.core.ui.adapters;
+-
+-import java.util.Map;
+-
+-import org.carrot2.core.ProcessingResult;
+-import org.carrot2.workbench.core.ui.SearchInput;
+-import org.carrot2.workbench.core.ui.SearchResult;
+-
+-import com.google.common.collect.Maps;
+-
+-public class SearchResultPropertySource extends MapPropertySource
+-{
+-    public SearchResultPropertySource(SearchResult searchResult)
+-    {
+-        final Map<String, Object> inputProperties = Maps.newHashMap();
+-        final SearchInput input = searchResult.getInput();
+-        inputProperties.put("source ID", input.getSourceId());
+-        inputProperties.put("algorithm ID", input.getAlgorithmId());
+-        inputProperties.put("request attributes", input.getAttributeValueSet().getAttributeValues());
+-        add(inputProperties, "Input");
+-
+-        final Map<String, Object> resultProperties = Maps.newHashMap();
+-        final ProcessingResult output = searchResult.getProcessingResult();
+-        if (output != null)
+-        {
+-            resultProperties.put("response attributes", 
+-                searchResult.getProcessingResult().getAttributes());
+-            add(resultProperties, "Output");
+-        }
+-    }
+-}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/PropertySourceAdapterFactory.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/PropertySourceAdapterFactory.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/adapters/PropertySourceAdapterFactory.java	(kopia robocza)
+@@ -1,92 +0,0 @@
+-
+-/*
+- * Carrot2 project.
+- *
+- * Copyright (C) 2002-2009, Dawid Weiss, Stanisław Osiński.
+- * All rights reserved.
+- *
+- * Refer to the full license file "carrot2.LICENSE"
+- * in the root folder of the repository checkout or at:
+- * http://www.carrot2.org/carrot2.LICENSE
+- */
+-
+-package org.carrot2.workbench.core.ui.adapters;
+-
+-
+-import java.util.Arrays;
+-
+-import org.carrot2.core.*;
+-import org.carrot2.workbench.core.ui.SearchEditor;
+-import org.carrot2.workbench.core.ui.SearchResult;
+-import org.eclipse.core.runtime.IAdapterFactory;
+-import org.eclipse.core.runtime.IAdapterManager;
+-import org.eclipse.ui.views.properties.IPropertySource;
+-import org.eclipse.ui.views.properties.IPropertySource2;
+-
+-
+-/**
+- * Adapters for transforming {@link SearchResult} into other classes.
+- */
+-@SuppressWarnings("unchecked")
+-public final class PropertySourceAdapterFactory implements IAdapterFactory
+-{
+-    private final static Class [] adapted = new Class [] { 
+-        IPropertySource2.class, IPropertySource.class }; 
+-
+-    /*
+-     * 
+-     */
+-    public Object getAdapter(Object adaptableObject, Class adapterType)
+-    {
+-        if (adaptableObject == null)
+-        {
+-            return null;
+-        }
+-
+-        if (Arrays.asList(adapted).contains(adapterType))
+-        {
+-            if (adaptableObject instanceof SearchEditor)
+-            {
+-                adaptableObject = ((SearchEditor) adaptableObject).getSearchResult();
+-                if (adaptableObject == null) return null;
+-            }
+-
+-            if (adaptableObject instanceof SearchResult)
+-            {
+-                return new SearchResultPropertySource((SearchResult) adaptableObject);
+-            }
+-            
+-            if (adaptableObject instanceof Cluster)
+-            {
+-                return new ClusterPropertySource((Cluster) adaptableObject);
+-            }
+-            
+-            if (adaptableObject instanceof Document)
+-            {
+-                return new DocumentPropertySource((Document) adaptableObject);
+-            }
+-        }
+-
+-        return null;
+-    }
+-
+-    /*
+-     * 
+-     */
+-    public Class [] getAdapterList()
+-    {
+-        return adapted;
+-    }
+-
+-    /**
+-     * Register 
+-     */
+-    public static void register(IAdapterManager adapterManager)
+-    {
+-        final PropertySourceAdapterFactory factory = new PropertySourceAdapterFactory();
+-        adapterManager.registerAdapters(factory, SearchEditor.class);
+-        adapterManager.registerAdapters(factory, SearchResult.class);
+-        adapterManager.registerAdapters(factory, Cluster.class);
+-        adapterManager.registerAdapters(factory, Document.class);
+-    }
+-}
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/BenchmarkJob.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/BenchmarkJob.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/BenchmarkJob.java	(kopia robocza)
+@@ -244,7 +244,7 @@
+     {
+         final String logName = 
+             String.format(Locale.ENGLISH, 
+-                "benchmark_%1$tF_%1$tH-%1$tM-%1$tS.log", new Date());
++                "benchmark_%1$tF_%1$tH-%1$tM-%1$tS.txt", new Date());
+ 
+         try
+         {
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/BenchmarkViewPage.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/BenchmarkViewPage.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/BenchmarkViewPage.java	(kopia robocza)
+@@ -11,12 +11,9 @@
+ 
+ package org.carrot2.workbench.core.ui;
+ 
+-import java.io.File;
+ import java.util.Locale;
+ 
+ import org.carrot2.workbench.core.helpers.Utils;
+-import org.eclipse.core.filesystem.EFS;
+-import org.eclipse.core.filesystem.IFileStore;
+ import org.eclipse.core.runtime.*;
+ import org.eclipse.core.runtime.jobs.*;
+ import org.eclipse.jface.layout.GridDataFactory;
+@@ -25,10 +22,8 @@
+ import org.eclipse.swt.events.SelectionAdapter;
+ import org.eclipse.swt.events.SelectionEvent;
+ import org.eclipse.swt.widgets.*;
+-import org.eclipse.ui.IEditorPart;
+-import org.eclipse.ui.editors.text.EditorsUI;
+-import org.eclipse.ui.editors.text.IEncodingSupport;
+-import org.eclipse.ui.ide.FileStoreEditorInput;
++import org.eclipse.ui.internal.browser.WebBrowserEditor;
++import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
+ import org.eclipse.ui.part.Page;
+ import org.eclipse.ui.progress.UIJob;
+ 
+@@ -37,6 +32,7 @@
+  * A single benchmark view page is associated with a given editor (and hence with the
+  * given input and algorithm).
+  */
++@SuppressWarnings("restriction")
+ final class BenchmarkViewPage extends Page
+ {
+     private final static String START_TEXT = "Start";
+@@ -180,17 +176,15 @@
+     private void endBenchmark()
+     {
+         assert Display.getCurrent() != null;
+-        
++
+         try
+         {
+             if (benchmarkJob.settings.openLogsInEditor)
+             {
+-                final File file = benchmarkJob.logFile;
+-                final IFileStore fileStore = EFS.getLocalFileSystem().fromLocalFile(file);
+-                final IEditorPart part = getSite().getWorkbenchWindow().getActivePage().openEditor(
+-                    new FileStoreEditorInput(fileStore), EditorsUI.DEFAULT_TEXT_EDITOR_ID);
+-
+-                ((IEncodingSupport) part.getAdapter(IEncodingSupport.class)).setEncoding("UTF-8");                
++                getSite().getWorkbenchWindow().getActivePage().openEditor(
++                    new WebBrowserEditorInput(
++                        benchmarkJob.logFile.toURL()),
++                    WebBrowserEditor.WEB_BROWSER_EDITOR_ID);
+             }
+         }
+         catch (Exception e)
+Index: workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ApplicationActionBarAdvisor.java
+===================================================================
+--- workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ApplicationActionBarAdvisor.java	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ApplicationActionBarAdvisor.java	(kopia robocza)
+@@ -27,7 +27,6 @@
+ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
+ import org.eclipse.ui.application.ActionBarAdvisor;
+ import org.eclipse.ui.application.IActionBarConfigurer;
+-import org.eclipse.ui.ide.IIDEActionConstants;
+ 
+ /**
+  * 
+@@ -106,7 +105,6 @@
+         fileToolBar.add(saveAsAction);
+         fileToolBar.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+ 
+-        coolBar.add(new GroupMarker(IIDEActionConstants.GROUP_FILE));
+         coolBar.add(fileToolBar);
+     }
+ 
+Index: workbench/org.carrot2.workbench.core/plugin.xml
+===================================================================
+--- workbench/org.carrot2.workbench.core/plugin.xml	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/plugin.xml	(kopia robocza)
+@@ -39,7 +39,7 @@
+          </property>
+          <property
+                name="aboutText"
+-               value="%productBlurb">
++               value="Carrot2 Workbench&#x0A;&#x0A;(c) Carrot2 developers.  All rights reserved.&#x0A;Visit http://carrot2.org for more information.&#x0A;&#x0A;This product includes software developed by the&#x0A;Apache Software Foundation http://www.apache.org/.">
+          </property>
+          <property
+                name="windowImages"
+@@ -104,10 +104,20 @@
+             id="org.carrot2.workbench.core.views.benchmark"
+             name="Benchmark">
+       </view>
++
+       <category
+             id="org.carrot2.workbench.core.workbench.category"
+             name="Carrot2">
+       </category>
++
++      <!-- Simulated categories and views from org.eclipse.ui.ide -->
++      <view
++            name="Progress"
++            icon="icons/pview.gif"
++            category="org.eclipse.ui"
++            class="org.eclipse.ui.internal.progress.ProgressView"
++            id="org.eclipse.ui.views.ProgressView">
++      </view>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors">
+@@ -132,6 +142,11 @@
+             id="org.carrot2.workbench.core.preferences.WorkbenchPreferencePage"
+             name="Carrot2">
+       </page>
++      <page
++            class="org.carrot2.workbench.core.preferences.GeneralPreferencesPage"
++            id="org.eclipse.ui.preferencePages.Workbench"
++            name="General">
++      </page>
+    </extension>
+    <extension
+          point="org.eclipse.core.runtime.preferences">
+Index: workbench/org.carrot2.workbench.core/META-INF/MANIFEST.MF
+===================================================================
+--- workbench/org.carrot2.workbench.core/META-INF/MANIFEST.MF	(wersja 3827)
++++ workbench/org.carrot2.workbench.core/META-INF/MANIFEST.MF	(kopia robocza)
+@@ -8,7 +8,6 @@
+ Require-Bundle: org.eclipse.ui;visibility:=reexport,
+  org.eclipse.core.runtime;visibility:=reexport,
+  org.eclipse.ui.forms;visibility:=reexport,
+- org.eclipse.ui.ide;visibility:=reexport,
+  org.eclipse.ui.browser,
+  org.carrot2.util.common;visibility:=reexport,
+  org.carrot2.text,
+@@ -16,8 +15,6 @@
+  org.carrot2.core,
+  org.apache.velocity,
+  org.eclipse.ui.workbench;bundle-version="3.5.0",
+- org.eclipse.ui.workbench.texteditor;bundle-version="3.4.1",
+- org.eclipse.ui.editors;bundle-version="3.4.0",
+  org.eclipse.core.resources;bundle-version="3.4.1",
+  org.eclipse.core.filesystem;bundle-version="1.2.0"
+ Bundle-ActivationPolicy: lazy
+Index: workbench/org.carrot2.workbench.core/icons/pview.gif
+===================================================================
+Nie mo�na wy�wietli�: plik binarny.
+svn:mime-type = application/octet-stream
+
+Zmiany atrybut�w dla: workbench\org.carrot2.workbench.core\icons\pview.gif
+___________________________________________________________________
+Dodane: svn:mime-type
+   + application/octet-stream
+
+Index: workbench/org.carrot2.workbench.feature/Workbench.product
+===================================================================
+--- workbench/org.carrot2.workbench.feature/Workbench.product	(wersja 3827)
++++ workbench/org.carrot2.workbench.feature/Workbench.product	(kopia robocza)
+@@ -50,45 +50,6 @@
+    </vm>
+ 
+    <plugins>
+-      <plugin id="com.google.collections"/>
+-      <plugin id="com.ibm.icu"/>
+-      <plugin id="com.ibm.icu36.data.update"/>
+-      <plugin id="com.thoughtworks.qdox"/>
+-      <plugin id="javax.servlet"/>
+-      <plugin id="net.sf.ehcache"/>
+-      <plugin id="org.apache.ant"/>
+-      <plugin id="org.apache.commons"/>
+-      <plugin id="org.apache.log4j"/>
+-      <plugin id="org.carrot2.core"/>
+-      <plugin id="org.carrot2.util.attribute"/>
+-      <plugin id="org.carrot2.util.common"/>
+-      <plugin id="org.carrot2.util.log4j" fragment="true"/>
+-      <plugin id="org.carrot2.workbench.core"/>
+-      <plugin id="org.codehaus.woodstox"/>
+-      <plugin id="org.eclipse.core.commands"/>
+-      <plugin id="org.eclipse.core.contenttype"/>
+-      <plugin id="org.eclipse.core.databinding"/>
+-      <plugin id="org.eclipse.core.expressions"/>
+-      <plugin id="org.eclipse.core.jobs"/>
+-      <plugin id="org.eclipse.core.runtime"/>
+-      <plugin id="org.eclipse.equinox.app"/>
+-      <plugin id="org.eclipse.equinox.common"/>
+-      <plugin id="org.eclipse.equinox.preferences"/>
+-      <plugin id="org.eclipse.equinox.registry"/>
+-      <plugin id="org.eclipse.help"/>
+-      <plugin id="org.eclipse.jdt.junit.runtime"/>
+-      <plugin id="org.eclipse.jdt.junit4.runtime"/>
+-      <plugin id="org.eclipse.jface"/>
+-      <plugin id="org.eclipse.jface.databinding"/>
+-      <plugin id="org.eclipse.osgi"/>
+-      <plugin id="org.eclipse.pde.runtime"/>
+-      <plugin id="org.eclipse.swt"/>
+-      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
+-      <plugin id="org.eclipse.ui"/>
+-      <plugin id="org.eclipse.ui.workbench"/>
+-      <plugin id="org.junit"/>
+-      <plugin id="org.junit4"/>
+-      <plugin id="org.simpleframework.xml"/>
+    </plugins>
+ 
+    <features>
+Index: workbench/org.carrot2.workbench.feature/feature.xml
+===================================================================
+--- workbench/org.carrot2.workbench.feature/feature.xml	(wersja 3827)
++++ workbench/org.carrot2.workbench.feature/feature.xml	(kopia robocza)
+@@ -1,148 +1,148 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<feature
+-      id="org.carrot2.workbench.feature"
+-      label="Carrot2 Workbench Feature"
+-      version="0.0.0.QUALIFIER"
+-      provider-name="Carrot2.org"
+-      plugin="org.carrot2.workbench.core">
+-
+-   <description url="http://www.carrot2.org">
+-      Carrot2 Workbench for text processing and clustering.
+-   </description>
+-
+-   <copyright url="http://www.carrot2.org">
+-      See http://www.carrot2.org/carrot2.LICENSE for copyright information.
+-   </copyright>
+-
+-   <license url="http://www.carrot2.org/carrot2.LICENSE">
+-      See http://www.carrot2.org/carrot2.LICENSE for license.
+-   </license>
+-
+-   <includes
+-         id="org.carrot2.workbench.core.feature"
+-         version="0.0.0"/>
+-
+-   <requires>
+-      <import feature="org.eclipse.rcp" version="3.4.1" match="compatible"/>
+-   </requires>
+-
+-   <plugin
+-         id="org.carrot2.algorithm.synthetic"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.yahoo"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.xml"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.algorithm.stc"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.microsoft"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.etools"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.algorithm.lingo"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.suites.default"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.pubmed"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.boss"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.google.desktop"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.solr"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.google.api"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.lucene"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.ambient"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.source.opensearch"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.carrot2.workbench.editors.lucene"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-</feature>
++<?xml version="1.0" encoding="UTF-8"?>
++<feature
++      id="org.carrot2.workbench.feature"
++      label="Carrot2 Workbench Feature"
++      version="0.0.0.QUALIFIER"
++      provider-name="Carrot2.org"
++      plugin="org.carrot2.workbench.core">
++
++   <description url="http://www.carrot2.org">
++      Carrot2 Workbench for text processing and clustering.
++   </description>
++
++   <copyright url="http://www.carrot2.org">
++      See http://www.carrot2.org/carrot2.LICENSE for copyright information.
++   </copyright>
++
++   <license url="http://www.carrot2.org/carrot2.LICENSE">
++      See http://www.carrot2.org/carrot2.LICENSE for license.
++   </license>
++
++   <includes
++         id="org.carrot2.workbench.core.feature"
++         version="0.0.0"/>
++
++   <requires>
++      <import feature="org.eclipse.rcp" version="3.4.1" match="compatible"/>
++   </requires>
++
++   <plugin
++         id="org.carrot2.algorithm.synthetic"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.yahoo"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.xml"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.algorithm.stc"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.microsoft"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.etools"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.algorithm.lingo"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.suites.default"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.pubmed"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.boss"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.google.desktop"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.solr"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.google.api"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.lucene"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.ambient"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.source.opensearch"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++   <plugin
++         id="org.carrot2.workbench.editors.lucene"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
++</feature>
+Index: core/carrot2-util-attribute/META-INF/MANIFEST.MF
+===================================================================
+--- core/carrot2-util-attribute/META-INF/MANIFEST.MF	(wersja 3827)
++++ core/carrot2-util-attribute/META-INF/MANIFEST.MF	(kopia robocza)
+@@ -11,7 +11,7 @@
+  org.carrot2.util.simplexml
+ Require-Bundle: org.carrot2.util.common;visibility:=reexport,
+  org.simpleframework.xml;visibility:=reexport,
+- com.thoughtworks.qdox;visibility:=reexport,
++ com.thoughtworks.qdox;resolution:=optional,
+  org.apache.ant;bundle-version="1.7.0";resolution:=optional
+ Bundle-Vendor: Carrot2.org
+ Eclipse-BuddyPolicy: registered

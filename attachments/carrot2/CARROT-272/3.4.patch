@@ -1,0 +1,161 @@
+Index: workbench/org.carrot2.workbench.core/META-INF/MANIFEST.MF
+===================================================================
+--- workbench/org.carrot2.workbench.core/META-INF/MANIFEST.MF	(revision 3075)
++++ workbench/org.carrot2.workbench.core/META-INF/MANIFEST.MF	(working copy)
+@@ -15,7 +15,7 @@
+  org.carrot2.util.attribute,
+  org.carrot2.core,
+  org.apache.velocity
+-Eclipse-LazyStart: true
++Bundle-ActivationPolicy: lazy
+ Bundle-ClassPath: .
+ Export-Package: org.carrot2.workbench.core,
+  org.carrot2.workbench.core.helpers,
+Index: workbench/org.carrot2.workbench.editors.lucene/META-INF/MANIFEST.MF
+===================================================================
+--- workbench/org.carrot2.workbench.editors.lucene/META-INF/MANIFEST.MF	(revision 3075)
++++ workbench/org.carrot2.workbench.editors.lucene/META-INF/MANIFEST.MF	(working copy)
+@@ -10,7 +10,7 @@
+  org.carrot2.workbench.core,
+  org.carrot2.workbench.editors,
+  org.carrot2.source.lucene
+-Eclipse-LazyStart: true
++Bundle-ActivationPolicy: lazy
+ Bundle-ClassPath: .,
+  META-INF/
+ Export-Package: org.carrot2.workbench.editors.lucene
+Index: workbench/org.carrot2.workbench.editors/META-INF/MANIFEST.MF
+===================================================================
+--- workbench/org.carrot2.workbench.editors/META-INF/MANIFEST.MF	(revision 3075)
++++ workbench/org.carrot2.workbench.editors/META-INF/MANIFEST.MF	(working copy)
+@@ -10,7 +10,7 @@
+  org.apache.lucene.v2,
+  org.carrot2.core,
+  org.carrot2.workbench.core
+-Eclipse-LazyStart: true
++Bundle-ActivationPolicy: lazy
+ Bundle-ClassPath: .,
+  META-INF/
+ Export-Package: org.carrot2.workbench.editors.impl
+Index: workbench/org.carrot2.workbench.test/feature.xml
+===================================================================
+--- workbench/org.carrot2.workbench.test/feature.xml	(revision 3075)
++++ workbench/org.carrot2.workbench.test/feature.xml	(working copy)
+@@ -17,15 +17,13 @@
+    </license>
+ 
+    <includes
+-         id="org.eclipse.test"
+-         version="0.0.0"/>
++         id="org.eclipse.test" version="0.0.0"/>
+ 
+    <includes
+-         id="org.eclipse.platform"
+-         version="0.0.0"/>
++         id="org.eclipse.platform" version="0.0.0"/>
+ 
+    <requires>
+-      <import feature="org.carrot2.workbench" version="1.0.0"/>
++      <import feature="org.carrot2.workbench" version="3.0.0" match="compatible"/>
+    </requires>
+ 
+    <plugin
+Index: workbench/org.carrot2.workbench.vis.aduna/META-INF/MANIFEST.MF
+===================================================================
+--- workbench/org.carrot2.workbench.vis.aduna/META-INF/MANIFEST.MF	(revision 3075)
++++ workbench/org.carrot2.workbench.vis.aduna/META-INF/MANIFEST.MF	(working copy)
+@@ -8,7 +8,7 @@
+  org.carrot2.core,
+  org.carrot2.util.common,
+  org.carrot2.workbench.core
+-Eclipse-LazyStart: true
++Bundle-ActivationPolicy: lazy
+ Bundle-ClassPath: .,
+  META-INF/,
+  icons/,
+Index: workbench/org.carrot2.workbench.vis.circles/META-INF/MANIFEST.MF
+===================================================================
+--- workbench/org.carrot2.workbench.vis.circles/META-INF/MANIFEST.MF	(revision 3075)
++++ workbench/org.carrot2.workbench.vis.circles/META-INF/MANIFEST.MF	(working copy)
+@@ -13,7 +13,7 @@
+  org.eclipse.equinox.http.servlet,
+  javax.servlet,
+  org.apache.velocity
+-Eclipse-LazyStart: true
++Bundle-ActivationPolicy: lazy
+ Bundle-ClassPath: .,
+  META-INF/,
+  icons/
+Index: workbench/org.carrot2.workbench/feature.xml
+===================================================================
+--- workbench/org.carrot2.workbench/feature.xml	(revision 3075)
++++ workbench/org.carrot2.workbench/feature.xml	(working copy)
+@@ -19,7 +19,7 @@
+    </license>
+ 
+    <requires>
+-      <import feature="org.eclipse.rcp" version="3.3.1.R33x_r20070802-8y8eE8sEV3Fz0z0GlHJrXvTAUS" match="compatible"/>
++      <import feature="org.eclipse.rcp" version="3.4.1" match="compatible"/>
+    </requires>
+ 
+    <plugin
+@@ -215,15 +215,6 @@
+          unpack="false"/>
+ 
+    <plugin
+-         id="org.eclipse.core.resources.win32"
+-         os="win32"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         fragment="true"
+-         unpack="false"/>
+-
+-   <plugin
+          id="org.eclipse.ui.views"
+          download-size="0"
+          install-size="0"
+@@ -610,4 +601,21 @@
+          version="0.0.0"
+          unpack="false"/>
+ 
++   <plugin
++         id="org.eclipse.core.resources.win32.x86"
++         os="win32"
++         arch="x86"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         fragment="true"
++         unpack="false"/>
++
++   <plugin
++         id="org.eclipse.ui.views.log"
++         download-size="0"
++         install-size="0"
++         version="0.0.0"
++         unpack="false"/>
++
+ </feature>
+Index: workbench/org.carrot2.workbench/Workbench.product
+===================================================================
+--- workbench/org.carrot2.workbench/Workbench.product	(revision 3075)
++++ workbench/org.carrot2.workbench/Workbench.product	(working copy)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<?pde version="3.1"?>
++<?pde version="3.4"?>
+ 
+-<product name="Carrot2 Workbench" id="org.carrot2.workbench.core.product" application="org.carrot2.workbench.core.application" useFeatures="true">
++<product name="Carrot2 Workbench" id="org.carrot2.workbench.core.product" application="org.carrot2.workbench.core.application" version="3.0.0" useFeatures="true">
+ 
+    <aboutInfo>
+       <image path="/org.carrot2.workbench.core/icons/product-logo.png"/>
+@@ -27,7 +27,6 @@
+       </win>
+    </launcher>
+ 
+-
+    <vm>
+    </vm>
+ 

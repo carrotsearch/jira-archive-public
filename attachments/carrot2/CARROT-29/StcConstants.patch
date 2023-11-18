@@ -1,0 +1,32 @@
+Index: C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/StcConstants.java
+===================================================================
+--- C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/StcConstants.java	(revision 1620)
++++ C:/work/carrot2/trunk/carrot2/components/carrot2-filter-stc/src/org/carrot2/filter/stc/StcConstants.java	(working copy)
+@@ -153,5 +153,26 @@
+ 	 * Default value for {@link #MAX_PHRASE_LENGTH}. 
+ 	 */
+ 	public final static int DEFAULT_MAX_PHRASE_LENGTH = 4;
+-    
++
++	public final static String SINGLE_WORD_SCORE = "stc.singleWordScore";
++
++	/**
++	 * Default value for {@link #SINGLE_WORD_SCORE}. 
++	 */
++	public final static float DEFAULT_SINGLE_WORD_SCORE = .5f;
++
++	public final static String OPTIMAL_PHRASE_LENGTH = "stc.optimalPhraseLength";
++
++	/**
++	 * Default value for {@link #OPTIMAL_PHRASE_LENGTH}. 
++	 */
++	public final static int DEFAULT_OPTIMAL_PHRASE_LENGTH = 3;
++
++	public final static String OPTIMAL_PHRASE_LENGTH_DEV = "stc.optimalPhraseLengthDev";
++
++	/**
++	 * Default value for {@link #OPTIMAL_PHRASE_LENGTH_DEV}. 
++	 */
++	public final static int DEFAULT_OPTIMAL_PHRASE_LENGTH_DEV = 2;
++
+ }

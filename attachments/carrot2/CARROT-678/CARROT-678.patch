@@ -1,0 +1,362 @@
+Index: core/carrot2-algorithm-synthetic/src/org/carrot2/clustering/synthetic/ByFullUrlClusteringAlgorithm.java
+===================================================================
+--- core/carrot2-algorithm-synthetic/src/org/carrot2/clustering/synthetic/ByFullUrlClusteringAlgorithm.java	(revision 0)
++++ core/carrot2-algorithm-synthetic/src/org/carrot2/clustering/synthetic/ByFullUrlClusteringAlgorithm.java	(revision 0)
+@@ -0,0 +1,356 @@
++package org.carrot2.clustering.synthetic;
++
++import java.util.*;
++
++import org.carrot2.core.*;
++import org.carrot2.core.attribute.*;
++import org.carrot2.util.attribute.*;
++
++/**
++ * Clusters documents according to their content URLs. {@link Document#CONTENT_URL}
++ * property will be used to obtain a document's URL.
++ * <p>
++ * Groups will be formed by comparing 'distance' between URLs. Currently only Levenshtein
++ * distance is supported.
++ * <p>
++ * Clusters will not be ordered
++ * 
++ * @label By Full URL Clustering
++ */
++@Bindable
++public class ByFullUrlClusteringAlgorithm extends ProcessingComponentBase implements
++    IClusteringAlgorithm
++{
++    private class DistanceCache
++    {
++        private HashMap<String, HashMap<String, Integer>> _distanceCache = new HashMap<String, HashMap<String, Integer>>();
++        private int _length = 0;
++
++        public void put(String s1, String s2, Integer distance)
++        {
++            if (!_distanceCache.containsKey(s1))
++            {
++                _distanceCache.put(s1, new HashMap<String, Integer>());
++            }
++            if (!_distanceCache.get(s1).containsKey(s2))
++            {
++                _length++;
++            }
++            _distanceCache.get(s1).put(s2, distance);
++        }
++
++        public Integer get(String s1, String s2)
++        {
++            if (_distanceCache.containsKey(s1) && _distanceCache.get(s1).containsKey(s2))
++            {
++                return _distanceCache.get(s1).get(s2);
++            }
++
++            // blindly assume it's there.
++            return _distanceCache.get(s2).get(s1);
++        }
++
++        public HashMap<String, HashMap<String, Integer>> getCache()
++        {
++            return _distanceCache;
++        }
++
++        public Integer [] distances()
++        {
++            List<Integer> l = new LinkedList<Integer>();
++
++            for (String s1 : _distanceCache.keySet())
++            {
++                for (String s2 : _distanceCache.get(s1).keySet())
++                {
++                    l.add(_distanceCache.get(s1).get(s2));
++                }
++            }
++
++            return (Integer []) l.toArray();
++        }
++
++        public double mean()
++        {
++            double sum = 0;
++
++            for (String s1 : _distanceCache.keySet())
++            {
++                for (String s2 : _distanceCache.get(s1).keySet())
++                {
++                    sum += _distanceCache.get(s1).get(s2);
++                }
++            }
++
++            return sum / _length;
++        }
++
++        public double variance()
++        {
++            // Get average
++            double avg = mean();
++
++            double sum = 0;
++
++            for (String s1 : _distanceCache.keySet())
++            {
++                for (String s2 : _distanceCache.get(s1).keySet())
++                {
++                    sum += Math.pow((_distanceCache.get(s1).get(s2) - avg), 2);
++                }
++            }
++
++            return sum / _length;
++        }
++
++        public double stdDev()
++        {
++            return Math.sqrt(variance());
++        }
++    }
++
++    /**
++     * Documents to cluster.
++     */
++    @Processing
++    @Input
++    @Internal
++    @Attribute(key = AttributeNames.DOCUMENTS)
++    public List<Document> documents;
++
++    /**
++     * Clusters created by the algorithm.
++     */
++    @Processing
++    @Output
++    @Internal
++    @Attribute(key = AttributeNames.CLUSTERS)
++    public List<Cluster> clusters = null;
++
++    private Integer getDistance(String s1, String s2)
++    {
++        // TODO: add more distance algorithms?
++        return org.apache.commons.lang.StringUtils.getLevenshteinDistance(s1, s2);
++    }
++
++    /**
++     * Performs by URL clustering.
++     */
++    @Override
++    public void process() throws ProcessingException
++    {
++        DistanceCache distanceCache = new DistanceCache();
++        HashMap<String, Document> urlDocumentLookup = new HashMap<String, Document>();
++
++        // calculate distance between every 2 documents.
++        for (int i = 0; i < this.documents.size(); i++)
++        {
++            urlDocumentLookup.put(this.documents.get(i).getContentUrl(), this.documents
++                .get(i));
++            for (int j = i + 1; j < this.documents.size(); j++)
++            {
++                String s1 = this.documents.get(i).getContentUrl();
++                String s2 = this.documents.get(j).getContentUrl();
++                distanceCache.put(s1, s2, getDistance(s1, s2));
++            }
++        }
++
++        double mean = distanceCache.mean();
++        // double stddev = distanceCache.stdDev();
++        // double var = distanceCache.variance();
++
++        // TODO: do something useful with threshold. multiple iterations, dividing in half
++        // each time?
++        int threshold = (int) mean;
++
++        HashMap<String, Set<Cluster>> urlClusters = new HashMap<String, Set<Cluster>>();
++        Set<Cluster> uniqueClusters = new HashSet<Cluster>();
++
++        HashMap<String, HashMap<String, Integer>> actualCache = distanceCache.getCache();
++        for (String s1 : actualCache.keySet())
++        {
++            HashMap<String, Integer> innerCache = actualCache.get(s1);
++            for (String s2 : innerCache.keySet())
++            {
++                if (innerCache.get(s2) < threshold)
++                {
++                    List<Cluster> newS1Clusters = new ArrayList<Cluster>();
++                    List<Cluster> newS2Clusters = new ArrayList<Cluster>();
++
++                    if (urlClusters.containsKey(s1))
++                    {
++                        for (Cluster c : urlClusters.get(s1))
++                        {
++                            // add s2 to s1's clusters
++                            if (!urlClusters.containsKey(s2)
++                                || !urlClusters.get(s2).contains(c))
++                            {
++                                newS2Clusters.add(c);
++                            }
++                        }
++                    }
++                    else
++                    {
++                        urlClusters.put(s1, new HashSet<Cluster>());
++                    }
++
++                    if (urlClusters.containsKey(s2))
++                    {
++                        for (Cluster c : urlClusters.get(s2))
++                        {
++                            // add s1 to s2's clusters
++                            if (!urlClusters.containsKey(s1)
++                                || !urlClusters.get(s1).contains(c))
++                            {
++                                newS1Clusters.add(c);
++                            }
++                        }
++                    }
++                    else
++                    {
++                        urlClusters.put(s2, new HashSet<Cluster>());
++                    }
++
++                    if (newS1Clusters.size() == 0 && newS2Clusters.size() == 0)
++                    {
++                        if (urlClusters.get(s1).size() > 0
++                            || urlClusters.get(s2).size() > 0)
++                        {
++                            // Do nothing... clusters already created for this pairing.
++                        }
++                        else
++                        {
++                            // create a new cluster and add both docs (and to urlClusters
++                            // map).
++                            // TODO: possible to give meaningful name?
++                            Cluster newCluster = new Cluster(Integer
++                                .toString(uniqueClusters.size()));
++                            newS1Clusters.add(newCluster);
++                            newS2Clusters = newS1Clusters;
++
++                            uniqueClusters.add(newCluster);
++
++                            newCluster.addDocuments(urlDocumentLookup.get(s1),
++                                urlDocumentLookup.get(s2));
++                            urlClusters.get(s1).add(newCluster);
++                            urlClusters.get(s2).add(newCluster);
++                        }
++                    }
++                    else
++                    {
++                        // not creating a new cluster. add to existing clusters, merge
++                        // clusters as necessary.
++
++                        // put all equivalent clusters into a single list.
++                        newS1Clusters.addAll(newS2Clusters);
++                        Cluster baseCluster = newS1Clusters.get(0);
++
++                        // add all of s1 and s2's existing clusters to the list too. TODO:
++                        // use HashSet so no duplicates?
++                        newS1Clusters.addAll(urlClusters.get(s1));
++                        newS1Clusters.addAll(urlClusters.get(s2));
++
++                        if (!urlClusters.get(s1).contains(baseCluster))
++                        {
++                            baseCluster.addDocuments(urlDocumentLookup.get(s1));
++                            urlClusters.get(s1).clear();
++                            urlClusters.get(s1).add(baseCluster);
++                        }
++
++                        if (!urlClusters.get(s2).contains(baseCluster))
++                        {
++                            baseCluster.addDocuments(urlDocumentLookup.get(s2));
++                            urlClusters.get(s2).clear();
++                            urlClusters.get(s2).add(baseCluster);
++                        }
++
++                        for (int i = 1; i < newS1Clusters.size(); i++)
++                        {
++                            // merge this cluster into baseCluster.
++                            Cluster redundantCluster = newS1Clusters.get(i);
++                            if (redundantCluster != baseCluster)
++                            {
++                                uniqueClusters.remove(redundantCluster);
++                                for (Document d : redundantCluster.getDocuments())
++                                {
++                                    // add d to baseCluster if it's not already there
++                                    // update d's indexed values.
++                                    // TODO: what about docs that are in 2+ redundant
++                                    // sets? smells like an optimization...
++                                    Set dClusters = urlClusters.get(d.getContentUrl());
++                                    if (!dClusters.contains(baseCluster))
++                                    {
++                                        baseCluster.addDocuments(d);
++                                    }
++                                    dClusters.clear();
++                                    dClusters.add(baseCluster);
++                                }
++                            }
++                        }
++                    }
++                }
++            }
++        }
++
++        this.clusters = new ArrayList(uniqueClusters);
++        setClusterScores();
++        Collections.sort(clusters, Cluster.BY_SCORE_COMPARATOR);
++    }
++
++    private void setClusterScores()
++    {
++        for (Cluster c : this.clusters)
++        {
++            // double mean = getClusterMean(c);
++            // double var = getClusterVariance(c);
++            double stddev = getClusterStdDev(c);
++
++            c.setScore(stddev);
++        }
++    }
++
++    private double getClusterMean(Cluster c)
++    {
++        double sum = 0;
++        int len = 0;
++
++        for (int i = 0; i < c.getDocuments().size(); i++)
++        {
++            for (int j = i + 1; j < c.getDocuments().size(); j++)
++            {
++                String s1 = c.getDocuments().get(i).getContentUrl();
++                String s2 = c.getDocuments().get(j).getContentUrl();
++                sum += getDistance(s1, s2);
++                len++;
++            }
++        }
++
++        return sum / len;
++    }
++
++    private double getClusterVariance(Cluster c)
++    {
++        double avg = getClusterMean(c);
++
++        double sum = 0;
++        int len = 0;
++
++        for (int i = 0; i < c.getDocuments().size(); i++)
++        {
++            for (int j = i + 1; j < c.getDocuments().size(); j++)
++            {
++                String s1 = c.getDocuments().get(i).getContentUrl();
++                String s2 = c.getDocuments().get(j).getContentUrl();
++                sum += Math.pow((getDistance(s1, s2) - avg), 2);
++                len++;
++            }
++        }
++
++        return sum / len;
++    }
++
++    public double getClusterStdDev(Cluster c)
++    {
++        return Math.sqrt(getClusterVariance(c));
++    }
++}
+\ No newline at end of file

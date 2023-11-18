@@ -1,0 +1,261 @@
+diff --git a/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ApplicationWorkbenchWindowAdvisor.java b/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ApplicationWorkbenchWindowAdvisor.java
+index 78bfca2..ac81a42 100644
+--- a/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ApplicationWorkbenchWindowAdvisor.java
++++ b/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ApplicationWorkbenchWindowAdvisor.java
+@@ -12,31 +12,25 @@
+ 
+ package org.carrot2.workbench.core;
+ 
+-import java.util.Arrays;
+-import java.util.List;
+-import java.util.Stack;
++import java.lang.reflect.InvocationTargetException;
++import java.util.*;
+ 
+ import org.carrot2.core.ProcessingComponentDescriptor;
+ import org.carrot2.workbench.core.helpers.Utils;
+ import org.carrot2.workbench.core.ui.actions.DisplayWelcomeView;
++import org.eclipse.core.runtime.IProgressMonitor;
+ import org.eclipse.core.runtime.Status;
+-import org.eclipse.jface.action.IContributionItem;
+-import org.eclipse.jface.action.ICoolBarManager;
+-import org.eclipse.jface.action.IMenuManager;
++import org.eclipse.jface.action.*;
+ import org.eclipse.jface.dialogs.ErrorDialog;
++import org.eclipse.jface.operation.IRunnableWithProgress;
+ import org.eclipse.jface.preference.IPreferenceNode;
+ import org.eclipse.jface.preference.PreferenceManager;
+ import org.eclipse.swt.graphics.Point;
+ import org.eclipse.swt.graphics.Rectangle;
+ import org.eclipse.swt.widgets.Display;
+ import org.eclipse.swt.widgets.Monitor;
+-import org.eclipse.ui.IEditorReference;
+-import org.eclipse.ui.IWorkbenchWindow;
+-import org.eclipse.ui.PlatformUI;
+-import org.eclipse.ui.application.ActionBarAdvisor;
+-import org.eclipse.ui.application.IActionBarConfigurer;
+-import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
+-import org.eclipse.ui.application.WorkbenchWindowAdvisor;
++import org.eclipse.ui.*;
++import org.eclipse.ui.application.*;
+ import org.eclipse.ui.views.IViewDescriptor;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+@@ -196,6 +190,22 @@ final class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
+         super.postWindowOpen();
+ 
+         /*
++         * Scan suites. 
++         */
++        final IWorkbench workbench = PlatformUI.getWorkbench();
++        try {
++            workbench.getProgressService().run(true, false, new IRunnableWithProgress()
++            {
++                @Override
++                public void run(IProgressMonitor monitor)
++                {
++                    WorkbenchCorePlugin.getDefault().initialize(monitor);
++                }
++            });
++        } catch (Exception e) {
++        }
++
++        /*
+          * After the Workbench window is opened we eagerly re-activate editors to
+          * initialize tab icons.
+          */
+diff --git a/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/WorkbenchCorePlugin.java b/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/WorkbenchCorePlugin.java
+index 1857836..ff5f97d 100644
+--- a/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/WorkbenchCorePlugin.java
++++ b/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/WorkbenchCorePlugin.java
+@@ -30,7 +30,10 @@ import org.eclipse.core.runtime.Platform;
+ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+ import org.eclipse.core.runtime.preferences.InstanceScope;
+ import org.eclipse.jface.resource.ImageDescriptor;
++import org.eclipse.ui.IWorkbench;
++import org.eclipse.ui.PlatformUI;
+ import org.eclipse.ui.plugin.AbstractUIPlugin;
++import org.eclipse.ui.progress.IProgressService;
+ import org.osgi.framework.*;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+@@ -44,6 +47,8 @@ import com.google.common.collect.Maps;
+  */
+ public class WorkbenchCorePlugin extends AbstractUIPlugin
+ {
++    private final static Logger logger = LoggerFactory.getLogger(WorkbenchCorePlugin.class);
++
+     /** Plug-in ID. */
+     public static final String PLUGIN_ID = "org.carrot2.workbench.core";
+ 
+@@ -94,28 +99,9 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
+     {
+         super.start(context);
+         plugin = this;
+-        
++
+         // Fix instance location first.
+         fixInstanceLocation();
+-
+-        // Scan the list of suite extension points.
+-        scanSuites();
+-
+-        ArrayList<IResourceLocator> locators = Lists.newArrayList();
+-        IResourceLocator workspaceLocator = getWorkspaceResourceLocator();
+-        if (workspaceLocator != null)
+-        {
+-            locators.add(workspaceLocator);
+-        }
+-        locators.add(Location.CONTEXT_CLASS_LOADER.locator);
+-
+-        Map<String, Object> initAttributes = Maps.newHashMap();
+-        initAttributes.put(
+-            AttributeUtils.getKey(DefaultLexicalDataFactory.class, "resourceLookup"),
+-            new ResourceLookup(locators));
+-
+-        controller = ControllerFactory.createCachingPooling(IDocumentSource.class);
+-        controller.init(initAttributes, componentSuite.getComponentConfigurations());        
+     }
+ 
+     private void fixInstanceLocation()
+@@ -174,6 +160,7 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
+      */
+     public Controller getController()
+     {
++        logger.debug("getController call.");
+         return controller;
+     }
+ 
+@@ -189,33 +176,6 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
+     }
+ 
+     /**
+-     * Returns all loaded components ({@link IClusteringAlgorithm} and
+-     * {@link IDocumentSource}.
+-     */
+-    public ProcessingComponentSuite getComponentSuite()
+-    {
+-        return componentSuite;
+-    }
+-
+-    /**
+-     * Returns a {@link BindableDescriptor} for a given component ID or <code>null</code>
+-     * if this component is not available.
+-     */
+-    public BindableDescriptor getComponentDescriptor(String componentID)
+-    {
+-        return bindableDescriptors.get(componentID);
+-    }
+-
+-    /**
+-     * Returns a {@link ProcessingComponentDescriptor} for a given component ID or
+-     * <code>null<code>.
+-     */
+-    public ProcessingComponentDescriptor getComponent(String componentID)
+-    {
+-        return processingDescriptors.get(componentID);
+-    }
+-
+-    /**
+      * Returns a {@link ImageDescriptor} for a given component or a default image if the
+      * component did not contain any icon.
+      */
+@@ -241,16 +201,18 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
+      * Scan all declared extensions of {@link #COMPONENT_SUITE_EXTENSION_ID} extension
+      * point.
+      */
+-    private void scanSuites()
++    private void scanSuites(IProgressMonitor monitor)
+     {
+         final List<ProcessingComponentSuite> suites = Lists.newArrayList();
+ 
+         final IExtension [] extensions = Platform.getExtensionRegistry()
+             .getExtensionPoint(COMPONENT_SUITE_EXTENSION_ID).getExtensions();
+ 
++        monitor.beginTask("Scanning suites", extensions.length);
+         // Load suites from extension points.
+         for (IExtension extension : extensions)
+         {
++            monitor.worked(1);
+             final IConfigurationElement [] configElements = extension
+                 .getConfigurationElements();
+             if (configElements.length == 1 && "suite".equals(configElements[0].getName()))
+@@ -344,6 +306,7 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
+                 }
+             }
+         }
++        monitor.done();
+ 
+         // Merge all available suites
+         final ArrayList<DocumentSourceDescriptor> sources = Lists.newArrayList();
+@@ -452,4 +415,30 @@ public class WorkbenchCorePlugin extends AbstractUIPlugin
+     {
+         return new InstanceScope().getNode(WorkbenchCorePlugin.PLUGIN_ID);
+     }
++
++    public void initialize(IProgressMonitor monitor)
++    {
++        // Scan the list of suite extension points.
++        scanSuites(monitor);
++        logger.debug("Suites scanned.");
++
++        ArrayList<IResourceLocator> locators = Lists.newArrayList();
++        IResourceLocator workspaceLocator = getWorkspaceResourceLocator();
++        if (workspaceLocator != null)
++        {
++            locators.add(workspaceLocator);
++        }
++        locators.add(Location.CONTEXT_CLASS_LOADER.locator);
++
++        Map<String, Object> initAttributes = Maps.newHashMap();
++        initAttributes.put(
++            AttributeUtils.getKey(DefaultLexicalDataFactory.class, "resourceLookup"),
++            new ResourceLookup(locators));
++
++        controller = ControllerFactory.createCachingPooling(IDocumentSource.class);
++        controller.init(initAttributes, componentSuite.getComponentConfigurations());
++        logger.debug("started.");
++        
++        try { Thread.sleep(5000); } catch (Exception e) {}
++    }
+ }
+diff --git a/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/SearchInputView.java b/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/SearchInputView.java
+index 54041de..969ae70 100644
+--- a/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/SearchInputView.java
++++ b/workbench/org.carrot2.workbench.core/src/org/carrot2/workbench/core/ui/SearchInputView.java
+@@ -351,6 +351,9 @@ public class SearchInputView extends ViewPart
+      */
+     @Override
+     public void createPartControl(Composite parent)
++    {}
++
++    public void createPartControl0(Composite parent)
+     {
+         /*
+          * Create GUI components.
+@@ -978,6 +981,7 @@ public class SearchInputView extends ViewPart
+     @Override
+     public void saveState(IMemento memento)
+     {
++        /*
+         final SearchInputViewMemento state = new SearchInputViewMemento();
+ 
+         state.sourceId = getSourceId();
+@@ -994,6 +998,7 @@ public class SearchInputView extends ViewPart
+         {
+             Utils.logError(e, false);
+         }
++        */
+     }
+ 
+     /**
+@@ -1009,7 +1014,8 @@ public class SearchInputView extends ViewPart
+         }
+         else
+         {
+-            this.sourceViewer.getCombo().setFocus();
++            if (sourceViewer != null) 
++                sourceViewer.getCombo().setFocus();
+         }
+     }
+ 

@@ -1,0 +1,214 @@
+Index: contrib/clustering/lib/carrot2-mini-3.2.0.jar
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: contrib/clustering/lib/carrot2-mini-3.2.0.jar
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: contrib/clustering/lib/mahout-math-0.3-SNAPSHOT.jar
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: contrib/clustering/lib/mahout-math-0.3-SNAPSHOT.jar
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: contrib/clustering/lib/log4j-1.2.14.jar
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+Index: contrib/clustering/lib/hppc-0.1-dev.jar
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: contrib/clustering/lib/hppc-0.1-dev.jar
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: contrib/clustering/lib/carrot2-mini-3.1.0.jar
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+Index: contrib/clustering/README.txt
+===================================================================
+--- contrib/clustering/README.txt	(revision 906886)
++++ contrib/clustering/README.txt	(working copy)
+@@ -3,6 +3,3 @@
+ 
+ See http://wiki.apache.org/solr/ClusteringComponent for how to get started.
+ 
+-Also, note, some of the Carrot2 libraries cannot be distributed in binary form because they are LGPL.  Thus, you will have
+-to download those components.  See the build.xml file located in this directory for the location of the libraries.
+-The libraries you will need are: nni.jar, Colt, PNJ and simple-xml.
+Index: contrib/clustering/build.xml
+===================================================================
+--- contrib/clustering/build.xml	(revision 906886)
++++ contrib/clustering/build.xml	(working copy)
+@@ -27,12 +27,10 @@
+     Clustering Integraton
+   </description>
+ 
+-  <property name="download.dir" value="lib/downloads"/>
+   <property name="example.local" value="example"/>
+ 
+   <path id="common.classpath">
+     <fileset dir="lib"/>
+-    <fileset dir="${download.dir}"/>
+     <pathelement location="${solr-path}/build/solr"/>
+     <pathelement location="${solr-path}/build/solrj"/>
+     <fileset dir="${solr-path}/lib" includes="*.jar"/>
+@@ -53,51 +51,15 @@
+       -->
+     <delete dir="example/lib" />
+   </target>
+-  <target name="clean-downloads">
+-    <delete>
+-      <fileset dir="${download.dir}"/>
+-    </delete>
+-  </target>
+ 
+   <target name="init">
+     <mkdir dir="${dest}/classes"/>
+-    <mkdir dir="${download.dir}" />
+     <mkdir dir="${build.javadoc}"/>
+     <ant dir="../../" inheritall="false" target="compile"/>
+     <ant dir="../../" inheritall="false" target="make-manifest"/>
+   </target>
+ 
+-  <target name="check-files" depends="proxy.setup">
+-    <available file="${download.dir}/colt-1.2.0.jar" property="colt.exists"/>
+-    <available file="${download.dir}/pcj-1.2.jar" property="pcj.exists"/>
+-    <available file="${download.dir}/nni-1.0.0.jar" property="nni.exists"/>
+-    <available file="${download.dir}/simple-xml-1.7.3.jar" property="simplexml.exists"/>
+-  </target>
+-  <!-- http://mirrors.ibiblio.org/pub/mirrors/maven2/org/simpleframework/simple-xml/1.7.3/simple-xml-1.7.3.jar -->
+-  <target name="get-colt" depends="check-files" unless="colt.exists">
+-    <!-- Get the LGPL deps and put them in a separate dir -->
+-    <get src="http://repo1.maven.org/maven2/colt/colt/1.2.0/colt-1.2.0.jar" dest="${download.dir}/colt-1.2.0.jar"/>
+-  </target>
+-  <target name="get-nni" depends="check-files" unless="nni.exists">
+-    <!-- Get the LGPL deps and put them in a separate dir -->
+-    <get src="http://download.carrot2.org/maven2/org/carrot2/nni/1.0.0/nni-1.0.0.jar"
+-         dest="${download.dir}/nni-1.0.0.jar"/>
+-  </target>
+-
+-  <!-- Compile time dep. only -->
+-  <target name="get-simple-xml" depends="check-files" unless="simplexml.exists">
+-    <!-- Get the LGPL deps and put them in a separate dir -->
+-    <get src="http://mirrors.ibiblio.org/pub/mirrors/maven2/org/simpleframework/simple-xml/1.7.3/simple-xml-1.7.3.jar"
+-         dest="${download.dir}/simple-xml-1.7.3.jar"/>
+-
+-  </target>
+-  <target name="get-pcj" depends="check-files" unless="pcj.exists">
+-    <!-- Get the LGPL deps and put them in a separate dir -->
+-    <get src="http://repo1.maven.org/maven2/pcj/pcj/1.2/pcj-1.2.jar" dest="${download.dir}/pcj-1.2.jar"/>
+-  </target>
+-  <target name="get-libraries" depends="init, get-colt, get-pcj, get-nni, get-simple-xml"/>
+-
+-  <target name="compile" depends="init, get-libraries">
++  <target name="compile" depends="init">
+     <solr-javac destdir="${dest}/classes"
+                 classpathref="common.classpath">
+       <src path="src/main/java"/>
+@@ -117,7 +79,7 @@
+   </target>
+ 
+   <target name="example" depends="build,dist">
+-    <!-- this task use to copy lib's but that's no longer needed because
++    <!-- this task used to copy lib's but that's no longer needed because
+          ../lib and ../lib/downloads are now included explicitly by
+          example/conf/solrconfig.xml
+       -->
+Index: contrib/clustering/solr-clustering-pom.xml.template
+===================================================================
+--- contrib/clustering/solr-clustering-pom.xml.template	(revision 906886)
++++ contrib/clustering/solr-clustering-pom.xml.template	(working copy)
+@@ -46,7 +46,7 @@
+       <artifactId>solr-core</artifactId>
+       <version>@maven_version@</version>
+     </dependency>
+-    <!-- Carrot -->
++    <!-- Carrot2 -->
+     <dependency>
+       <groupId>org.carrot2</groupId>
+       <artifactId>carrot2-mini</artifactId>
+Index: LICENSE.txt
+===================================================================
+--- LICENSE.txt	(revision 906886)
++++ LICENSE.txt	(working copy)
+@@ -829,8 +829,68 @@
+  *  limitations under the License.
+  */
+ 
++==========================================================================
++simple-xml
++/**
++ *  Licensed under the Apache License, Version 2.0 (the "License");
++ *  you may not use this file except in compliance with the License.
++ *  You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ *  Unless required by applicable law or agreed to in writing, software
++ *  distributed under the License is distributed on an "AS IS" BASIS,
++ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ *  See the License for the specific language governing permissions and
++ *  limitations under the License.
++ */
+ 
++==========================================================================
++High Performance Primitive Collections (HPPC)
+ 
++/**
++ *  Licensed under the Apache License, Version 2.0 (the "License");
++ *  you may not use this file except in compliance with the License.
++ *  You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ *  Unless required by applicable law or agreed to in writing, software
++ *  distributed under the License is distributed on an "AS IS" BASIS,
++ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ *  See the License for the specific language governing permissions and
++ *  limitations under the License.
++ */
++
++==========================================================================
++Mahout-math, (collections)
++
++/**
++ *  Licensed under the Apache License, Version 2.0 (the "License");
++ *  you may not use this file except in compliance with the License.
++ *  You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ *  Unless required by applicable law or agreed to in writing, software
++ *  distributed under the License is distributed on an "AS IS" BASIS,
++ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ *  See the License for the specific language governing permissions and
++ *  limitations under the License.
++ */
++
++Code ported from the COLT project (the part covered by BSD-like license).
++
++Permission to use, copy, modify, distribute and sell this software and its documentation for any
++purpose is hereby granted without fee, provided that the above copyright notice appear in all copies
++and that both that copyright notice and this permission notice appear in supporting documentation.
++CERN makes no representations about the suitability of this software for any purpose. It is provided
++"as is" without expressed or implied warranty.
++
++[Mahout note: We have included, as source, parts of the CERN Colt Java Matrix library as a Module in
++the Mahout source tree. The parts included are those in cern.colt* , cern.jet*, cern.clhep. We have
++excluded the hep.aida* packages.]
++
+ ===========================================================================
+ Apache Tika Licenses - contrib/extraction
+ ---------------------------------------------------------------------------

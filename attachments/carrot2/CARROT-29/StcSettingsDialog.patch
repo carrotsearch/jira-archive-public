@@ -1,0 +1,20 @@
+Index: C:/work/carrot2/trunk/carrot2/applications/carrot2-demo-browser/src/org/carrot2/demo/settings/StcSettingsDialog.java
+===================================================================
+--- C:/work/carrot2/trunk/carrot2/applications/carrot2-demo-browser/src/org/carrot2/demo/settings/StcSettingsDialog.java	(revision 1620)
++++ C:/work/carrot2/trunk/carrot2/applications/carrot2-demo-browser/src/org/carrot2/demo/settings/StcSettingsDialog.java	(working copy)
+@@ -74,6 +74,15 @@
+         builder.append(ThresholdHelper.createDoubleThreshold(settings, StcConstants.MOST_GENERAL_PHRASE_COVERAGE,
+                 "Most general p. coverage:", 0, 1, 0.1, 0.25));
+ 
++        builder.appendSeparator("Cluster Phrase Length");
++
++        builder.append(ThresholdHelper.createDoubleThreshold(settings, StcConstants.SINGLE_WORD_SCORE,
++                "Single Word Boost:", 0, 1, 0.1, 0.25));
++        builder.append(ThresholdHelper.createIntegerThreshold(settings, StcConstants.OPTIMAL_PHRASE_LENGTH,
++                "Optimal Phrase Length:", 1, 10, 1, 2));
++        builder.append(ThresholdHelper.createIntegerThreshold(settings, StcConstants.OPTIMAL_PHRASE_LENGTH_DEV,
++                "Optimal Phrase Length Deviation:", 1, 10, 1, 2));
++
+         this.add(builder.getPanel(), BorderLayout.CENTER);
+     }
+ }
